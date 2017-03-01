@@ -1,12 +1,10 @@
+//Source.cpp - Brian Keegan & Ethan Binyaminov CSC 326 
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <conio.h>
 #include "XIEditor.h"
 
 void main(int argc, char *argv[]) {
 	XIEditor editor(argv[1]);
-	char userEntry;
 
 	std::string startMsg = std::string("\t\t\t\t-- XI-Editor --\n") + 
 		"Esc to quit, " +
@@ -20,8 +18,7 @@ void main(int argc, char *argv[]) {
 		system("cls");
 		std::cout << startMsg;
 
-		std::cout << editor.displayText();
-		userEntry = _getch();
-		editor.userInput(userEntry);
+		editor.printLines();
+		editor.userInput();
 	}
 }

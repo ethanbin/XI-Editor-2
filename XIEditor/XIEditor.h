@@ -4,22 +4,21 @@
 
 class XIEditor {
 	public:
-		//default constructor sets  _arrayBuffer a dynamic array of 3
-		XIEditor();
 
 		/*constructor opens file fileName, counts lines, 
 		makes dynamic array from arrayBuffer,
 		then reads in each line to arrayBuffer.*/
 		XIEditor(std::string);
+
 		~XIEditor();
 
 		//returns string with file's text with a star and carrot as a cursor
-		std::string displayText();
+		void printLines();
 
 		/*accepts char and compares it to KeyCode, 
 		moves index and/or carrot depending on input,
 		ensures cursor does not go beyond the text*/
-		void userInput(char);
+		void userInput();
 
 	private: //functions to be used by public member functions only
 
@@ -39,6 +38,5 @@ class XIEditor {
 
 	private:
 		std::string *_arrayBuffer;
-		int _numLines, _currentLine=0, _currentChar=0;
-		char _userInput;
+		int _capacity, _currentLine=0, _currentChar=0;
 };

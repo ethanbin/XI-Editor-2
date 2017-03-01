@@ -1,35 +1,38 @@
 #include "XIEditor.h"
 #include <iostream>
 #include <fstream>
+#include <conio.h>
 
-XIEditor::XIEditor() {
-	_numLines = 3;
-	_arrayBuffer = new std::string[_numLines];
-}
+using std::cout;
+using std::endl;
+using std::ifstream;
 
 XIEditor::XIEditor(std::string fileName) {
-	_numLines = 0;
+	_capacity = 0;
 
-	std::ifstream userFile;
+	ifstream userFile;
 	userFile.open(fileName);
 
 	if (!userFile.is_open()) { //throw;
-		std::cout << "ERROR: No File Found." << std::endl;
+		cout << "ERROR: No File Found." << endl;
 		userFile.close();
 		exit(EXIT_FAILURE);
 	}
 
 	std::string lineCollector;
-	for (; !userFile.eof(); _numLines++)
+	for (; !userFile.eof(); _capacity++)
 		getline(userFile, lineCollector);
+
 	userFile.clear();
 	userFile.seekg(0);
 
-	_arrayBuffer = new std::string[_numLines];
+	_arrayBuffer = new std::string[_capacity];
 
 	for (int i = 0; !userFile.eof(); i++)
 		getline(userFile, _arrayBuffer[i]);
 
+	_currentLine = 0;
+	_currentChar = 0;
 	userFile.close();
 }
 
@@ -37,30 +40,36 @@ XIEditor::~XIEditor() {
 	delete[] _arrayBuffer;
 }
 
-std::string XIEditor::displayText() {
-	std::string textResult = "";
-	//loop for however many lines there are
-	for (int i = 0; i < _numLines; i++) {
-		//if we are about to output the current line the user is on
-		if (i == _currentLine) {
-			textResult += "*" + _arrayBuffer[i] + "\n";
-			//then to output caret, pushed char the user is on by spaces
-			for (int i = 0; i < _currentChar; i++)
-				textResult += " ";
-
-			//add extra space to account for asterisk shifting the above line
-			textResult += " ";
-			textResult = textResult + "^" + "\n";
+//This method prints all visible content
+void XIEditor::printLines()
+{
+	for (int i = 0; i < _capacity; i++)
+	{
+		//This makes _currentLine relative to '*'
+		if (i == _currentLine)
+		{
+			cout << '*';
+			cout << _arrayBuffer[i] << endl;
+			cout << ' ';
+			//This makes current position relative to '^'
+			for (int j = 0; j < _currentChar; j++)
+			{
+				cout << ' ';
+			}
+			cout << '^' << endl;
+		}
+		else
+		{
+			cout << ' ';
+			cout << _arrayBuffer[i] << endl;
 		}
 
-		else
-			textResult += " " + _arrayBuffer[i] + "\n";
+
 	}
-	return textResult;
 }
 
-void XIEditor::userInput(char userInput) {
-	_userInput = userInput;
+void XIEditor::userInput() {
+	char userInput = _getch();
 	switch (tolower(userInput))
 	{
 			//move up
@@ -81,7 +90,7 @@ void XIEditor::userInput(char userInput) {
 		{
 			_currentChar++;
 			//if not at last line
-			if (_currentLine < _numLines-1)
+			if (_currentLine < _capacity-1)
 				//move cursor to start of next line when going too far right
 				if (_currentChar >= _arrayBuffer[_currentLine].length()) {
 					_currentChar = 0;
@@ -116,7 +125,7 @@ void XIEditor::userInput(char userInput) {
 			_arrayBuffer[_currentLine].erase(_currentChar,1);
 			//so we arent left with blank line, make if statement to call deleteLine (will be made) when string is empty
 			break;
-		}
+		} 
 	}
 	stayInText();
 }
@@ -128,8 +137,8 @@ void XIEditor::stayInText() {
 	if (_currentLine < 0)
 		_currentLine = 0;
 	//for going too far down
-	if (_currentLine >= _numLines)
-		_currentLine = _numLines - 1;
+	if (_currentLine >= _capacity)
+		_currentLine = _capacity - 1;
 	//for going too far right
 	if (_currentChar >= currentLineLength)
 		_currentChar = currentLineLength - 1;
