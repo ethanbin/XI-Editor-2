@@ -136,6 +136,12 @@ void XIEditor::userInput() {
 	stayInText();
 }
 
+void XIEditor::deleteLine(int lineToDel) {
+	for (int i = lineToDel; i < _capacity - 1; i++)
+		_arrayBuffer[i] = _arrayBuffer[i + 1];
+	resize(_capacity - 1);
+}
+
 void XIEditor::stayInText() {
 	int currentLineLength = _arrayBuffer[_currentLine].length();
 

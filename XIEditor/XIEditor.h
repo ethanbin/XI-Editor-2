@@ -22,6 +22,9 @@ class XIEditor {
 
 	private: //functions to be used by public member functions only
 
+		//deletes a line at the given location
+		void deleteLine(int);
+
 		//prevents the carrot from going too far right
 		void stayInText();
 
