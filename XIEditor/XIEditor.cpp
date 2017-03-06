@@ -139,12 +139,12 @@ void XIEditor::userInput() {
 void XIEditor::resize(int resizeTo) {
 	std::string *temp = new std::string[_capacity];
 
-	for (int i = 0; i < _capacity && resizeTo; i++)
+	for (int i = 0; i < _capacity && i < resizeTo; i++)
 		temp[i] = _arrayBuffer[i];
 
 	_arrayBuffer = new std::string[resizeTo];
 
-	for (int i = 0; i < _capacity && resizeTo; i++)
+	for (int i = 0; i < _capacity && i < resizeTo; i++)
 		_arrayBuffer[i] = temp[i];
 	
 	_capacity = resizeTo;
