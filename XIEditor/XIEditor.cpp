@@ -127,7 +127,11 @@ void XIEditor::userInput() {
 			//so we arent left with blank line, make if statement to call deleteLine (will be made) when string is empty
 			break;
 		}
-
+		case KeyCode::DEL_LINE: {
+			if (_getch() == KeyCode::DEL_LINE)
+				deleteLine(_currentLine);
+			break;
+		}
 	}
 	stayInText();
 }
