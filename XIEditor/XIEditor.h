@@ -26,14 +26,16 @@ class XIEditor {
 		void stayInText();
 
 		//for comparing input with in userInput()
+		//commands using 2 different keys will be named with a 1 and 2, 1 being required first.
 		enum KeyCode {
 			UP = 'k',
 			DOWN = 'j',
 			RIGHT = 'l',
 			LEFT = 'h',
-			ESC = '\x1b',
 			DEL_CHAR = 'x',
-			DEL_LINE = 'd'
+			DEL_LINE = 'd',
+			ESC_1 = ';',
+			ESC_2 = 'q'
 		};
 
 	private:

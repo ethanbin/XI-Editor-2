@@ -13,7 +13,7 @@ XIEditor::XIEditor(std::string fileName) {
 	ifstream userFile;
 	userFile.open(fileName);
 
-	if (!userFile.is_open()) { //throw;
+	if (!userFile.is_open()) {
 		cout << "ERROR: No File Found." << endl;
 		userFile.close();
 		exit(EXIT_FAILURE);
@@ -115,9 +115,10 @@ void XIEditor::userInput() {
 				}
 			break;
 		}
-		case KeyCode::ESC:
+		case KeyCode::ESC_1:
 		{
-			exit(EXIT_SUCCESS);
+			if (_getch() == ESC_2)
+				exit(EXIT_SUCCESS);
 			break;
 		}
 		case KeyCode::DEL_CHAR:
@@ -125,7 +126,8 @@ void XIEditor::userInput() {
 			_arrayBuffer[_currentLine].erase(_currentChar,1);
 			//so we arent left with blank line, make if statement to call deleteLine (will be made) when string is empty
 			break;
-		} 
+		}
+
 	}
 	stayInText();
 }
