@@ -22,6 +22,10 @@ class XIEditor {
 
 	private: //functions to be used by public member functions only
 
+		//resizes an array to a given size
+		//if the given size is smaller than the current array buffer,  
+		void resize(int);
+
 		//deletes a line at the given location
 		void deleteLine(int);
 

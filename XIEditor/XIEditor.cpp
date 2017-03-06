@@ -136,6 +136,20 @@ void XIEditor::userInput() {
 	stayInText();
 }
 
+void XIEditor::resize(int resizeTo) {
+	std::string *temp = new std::string[_capacity];
+
+	for (int i = 0; i < _capacity && resizeTo; i++)
+		temp[i] = _arrayBuffer[i];
+
+	_arrayBuffer = new std::string[resizeTo];
+
+	for (int i = 0; i < _capacity && resizeTo; i++)
+		_arrayBuffer[i] = temp[i];
+	
+	_capacity = resizeTo;
+}
+
 void XIEditor::deleteLine(int lineToDel) {
 	for (int i = lineToDel; i < _capacity - 1; i++)
 		_arrayBuffer[i] = _arrayBuffer[i + 1];
