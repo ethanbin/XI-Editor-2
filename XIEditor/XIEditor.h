@@ -22,18 +22,27 @@ class XIEditor {
 
 	private: //functions to be used by public member functions only
 
+		//resizes an array to a given size
+		//if the given size is smaller than the current array buffer,  
+		void resize(int);
+
+		//deletes a line at the given location
+		void deleteLine(int);
+
 		//prevents the carrot from going too far right
 		void stayInText();
 
 		//for comparing input with in userInput()
+		//commands using 2 different keys will be named with a 1 and 2, 1 being required first.
 		enum KeyCode {
 			UP = 'k',
 			DOWN = 'j',
 			RIGHT = 'l',
 			LEFT = 'h',
-			ESC = '\x1b',
 			DEL_CHAR = 'x',
-			DEL_LINE = 'd'
+			DEL_LINE = 'd',
+			ESC_1 = ';',
+			ESC_2 = 'q'
 		};
 
 	private:

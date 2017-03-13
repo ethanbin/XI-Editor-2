@@ -13,7 +13,7 @@ XIEditor::XIEditor(std::string fileName) {
 	ifstream userFile;
 	userFile.open(fileName);
 
-	if (!userFile.is_open()) { //throw;
+	if (!userFile.is_open()) {
 		cout << "ERROR: No File Found." << endl;
 		userFile.close();
 		exit(EXIT_FAILURE);
@@ -115,9 +115,10 @@ void XIEditor::userInput() {
 				}
 			break;
 		}
-		case KeyCode::ESC:
+		case KeyCode::ESC_1:
 		{
-			exit(EXIT_SUCCESS);
+			if (_getch() == ESC_2)
+				exit(EXIT_SUCCESS);
 			break;
 		}
 		case KeyCode::DEL_CHAR:
@@ -125,9 +126,34 @@ void XIEditor::userInput() {
 			_arrayBuffer[_currentLine].erase(_currentChar,1);
 			//so we arent left with blank line, make if statement to call deleteLine (will be made) when string is empty
 			break;
-		} 
+		}
+		case KeyCode::DEL_LINE: {
+			if (_getch() == KeyCode::DEL_LINE)
+				deleteLine(_currentLine);
+			break;
+		}
 	}
 	stayInText();
+}
+
+void XIEditor::resize(int resizeTo) {
+	std::string *temp = new std::string[_capacity];
+
+	for (int i = 0; i < _capacity && i < resizeTo; i++)
+		temp[i] = _arrayBuffer[i];
+
+	_arrayBuffer = new std::string[resizeTo];
+
+	for (int i = 0; i < _capacity && i < resizeTo; i++)
+		_arrayBuffer[i] = temp[i];
+	
+	_capacity = resizeTo;
+}
+
+void XIEditor::deleteLine(int lineToDel) {
+	for (int i = lineToDel; i < _capacity - 1; i++)
+		_arrayBuffer[i] = _arrayBuffer[i + 1];
+	resize(_capacity - 1);
 }
 
 void XIEditor::stayInText() {
