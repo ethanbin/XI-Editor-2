@@ -1,6 +1,7 @@
 #pragma once
 #include "StackInterface.h"
-#include "ArrayStack.h"
+//#include "ArrayStack.h"
+#include "LinkedStack.h"
 #include "Command.h"
 #include <fstream>
 #include <string>
@@ -51,7 +52,7 @@ class XIEditor {
 		bool undo();
 
 	private: //variables
-		ArrayStack<Command> _commands;
+		LinkedStack<Command> _commands;
 		std::string *_arrayBuffer;
 		int _capacity, _usedLines, _currentLine=0, _currentChar=0;
 };

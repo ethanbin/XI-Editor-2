@@ -151,9 +151,10 @@
     <ClCompile Include="XIEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ArrayStack.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="LinkedStack.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="StackInterface.h" />
     <ClInclude Include="XIEditor.h" />
   </ItemGroup>
