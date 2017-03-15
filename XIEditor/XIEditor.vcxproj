@@ -147,13 +147,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="XIEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrayStack.h" />
+    <ClInclude Include="Command.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="StackInterface.h" />
     <ClInclude Include="XIEditor.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

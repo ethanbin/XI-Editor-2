@@ -1,9 +1,12 @@
 #pragma once
+#include "StackInterface.h"
+#include "ArrayStack.h"
+#include "Command.h"
 #include <fstream>
 #include <string>
 
 class XIEditor {
-	public:
+	public: //functions
 
 		/*constructor opens file fileName, counts lines, 
 		makes dynamic array from arrayBuffer,
@@ -20,32 +23,35 @@ class XIEditor {
 		ensures cursor does not go beyond the text*/
 		void userInput();
 
-	private: //functions to be used by public member functions only
+	private: //functions
+
+		//move right. if going right goes past text, go to beginning of next line.
+		void goRight();
+
+		//move left. if going left goes past text, go to end of previous line.
+		void goLeft();
 
 		//resizes an array to a given size
-		//if the given size is smaller than the current array buffer,  
+		//if the given size is smaller than the current capacity, then addresses beyond resizeTo are lost.
+		//after resizing, usedLines is set to however many items were copied back into the array buffer.
 		void resize(int);
 
 		//deletes a line at the given location
 		void deleteLine(int);
+		
+		//inserts a new line on indicated line.
+		//whatever was on this line is pushed to the next line.
+		void insertLine(std::string, int);
 
-		//prevents the carrot from going too far right
-		void stayInText();
+		//prevents the carrot from going too far right 
+		//returns true if the function corrected the cursor position
+		bool stayInText();
 
-		//for comparing input with in userInput()
-		//commands using 2 different keys will be named with a 1 and 2, 1 being required first.
-		enum KeyCode {
-			UP = 'k',
-			DOWN = 'j',
-			RIGHT = 'l',
-			LEFT = 'h',
-			DEL_CHAR = 'x',
-			DEL_LINE = 'd',
-			ESC_1 = ';',
-			ESC_2 = 'q'
-		};
+		//undo last command commited by user. commands are tracked by stack
+		bool undo();
 
-	private:
+	private: //variables
+		ArrayStack<Command> _commands;
 		std::string *_arrayBuffer;
-		int _capacity, _currentLine=0, _currentChar=0;
+		int _capacity, _usedLines, _currentLine=0, _currentChar=0;
 };

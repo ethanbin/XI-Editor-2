@@ -1,4 +1,5 @@
 #include "XIEditor.h"
+#include "Enums.h"
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -33,6 +34,7 @@ XIEditor::XIEditor(std::string fileName) {
 
 	_currentLine = 0;
 	_currentChar = 0;
+	_usedLines = _capacity;
 	userFile.close();
 }
 
@@ -43,7 +45,7 @@ XIEditor::~XIEditor() {
 //This method prints all visible content
 void XIEditor::printLines()
 {
-	for (int i = 0; i < _capacity; i++)
+	for (int i = 0; i < _usedLines; i++)
 	{
 		//This makes _currentLine relative to '*'
 		if (i == _currentLine)
@@ -63,112 +65,208 @@ void XIEditor::printLines()
 			cout << ' ';
 			cout << _arrayBuffer[i] << endl;
 		}
-
-
 	}
 }
 
 void XIEditor::userInput() {
 	char userInput = _getch();
-	switch (tolower(userInput))
+
+	switch (userInput)
 	{
 			//move up
 		case KeyCode::UP:
 		{
 			_currentLine--;
+			_commands.push(Command(Action::UP));
 			break;
 		}
 		//move down
 		case KeyCode::DOWN:
 		{
 			_currentLine++;
+			_commands.push(Command(Action::DOWN));
 			break;
 		}
 
 		//move right
 		case KeyCode::RIGHT:
 		{
-			_currentChar++;
-			//if not at last line
-			if (_currentLine < _capacity-1)
-				//move cursor to start of next line when going too far right
-				if (_currentChar >= _arrayBuffer[_currentLine].length()) {
-					_currentChar = 0;
-					_currentLine++;
-				}
+			goRight();
+			_commands.push(Command(Action::RIGHT));
 			break;
 		}
 		//move left
 		case KeyCode::LEFT:
 		{
-			_currentChar--;
-			//if at first line, keep cursor from going too far left
-			if (_currentLine <= 0) {
-				_currentLine = 0;	
-			}
-			//if not at first line
-			if(_currentLine>0)
-				//move cursor to end of previous line when going too far left
-				if (_currentChar < 0) {
-					_currentLine--;
-					_currentChar = _arrayBuffer[_currentLine].length() - 1;
-				}
+			goLeft();
+			_commands.push(Command(Action::LEFT));
 			break;
 		}
 		case KeyCode::ESC_1:
 		{
-			if (_getch() == ESC_2)
+			if (_getch() == KeyCode::ESC_2) {
 				exit(EXIT_SUCCESS);
+			}
 			break;
 		}
 		case KeyCode::DEL_CHAR:
 		{
-			_arrayBuffer[_currentLine].erase(_currentChar,1);
-			//so we arent left with blank line, make if statement to call deleteLine (will be made) when string is empty
+			//if the string is empty (no char to delete), delete the line.
+			if (_arrayBuffer[_currentLine] == "") {
+				deleteLine(_currentLine);
+				_commands.push(Command(Action::DEL_CHAR, std::string("")));
+			}
+
+			else {
+				//push to stack the command and the letter being deleted
+				_commands.push(Command(Action::DEL_CHAR,
+					std::string(1, _arrayBuffer[_currentLine][_currentChar]))
+				);
+				_arrayBuffer[_currentLine].erase(_currentChar, 1);
+			}
 			break;
 		}
 		case KeyCode::DEL_LINE: {
-			if (_getch() == KeyCode::DEL_LINE)
+			//push to stack the command and the line being deleted
+
+			if (_getch() == KeyCode::DEL_LINE) {
+				_commands.push(Command(Action::DEL_LINE, _arrayBuffer[_currentLine]));
 				deleteLine(_currentLine);
+			}
+			break;
+		}
+		case KeyCode::INSERT_ABOVE: {
+			insertLine("", _currentLine);
+			break;
+		}
+		case KeyCode::UNDO: {
+			undo();
 			break;
 		}
 	}
 	stayInText();
 }
 
+void XIEditor::goRight() {
+	_currentChar++;
+	//if not at last line
+	if (_currentLine < _capacity - 1)
+		//move cursor to start of next line when going too far right
+		if (_currentChar >= _arrayBuffer[_currentLine].length()) {
+			_currentChar = 0;
+			_currentLine++;
+		}
+	}
+
+void XIEditor::goLeft() {
+	_currentChar--;
+	//if at first line, keep cursor from going too far left
+	if (_currentLine <= 0) {
+		_currentLine = 0;
+	}
+	//if not at first line
+	if (_currentLine > 0)
+		//move cursor to end of previous line when going too far left
+		if (_currentChar < 0) {
+			_currentLine--;
+			_currentChar = _arrayBuffer[_currentLine].length() - 1;
+		}
+}
+
 void XIEditor::resize(int resizeTo) {
 	std::string *temp = new std::string[_capacity];
-
-	for (int i = 0; i < _capacity && i < resizeTo; i++)
+	
+	int itemsCopied = 0;
+	for (int i = 0; i < _capacity && i < resizeTo && i < _usedLines; i++) {
 		temp[i] = _arrayBuffer[i];
+		itemsCopied++;
+	}
 
 	_arrayBuffer = new std::string[resizeTo];
 
-	for (int i = 0; i < _capacity && i < resizeTo; i++)
+	for (int i = 0; i < itemsCopied; i++)
 		_arrayBuffer[i] = temp[i];
 	
 	_capacity = resizeTo;
+	_usedLines = itemsCopied;
 }
 
-void XIEditor::deleteLine(int lineToDel) {
-	for (int i = lineToDel; i < _capacity - 1; i++)
+void XIEditor::deleteLine(int deleteHere) {
+	for (int i = deleteHere; i < _usedLines - 1; i++)
 		_arrayBuffer[i] = _arrayBuffer[i + 1];
-	resize(_capacity - 1);
+	//resize(_capacity - 1);
+	_usedLines--;
 }
 
-void XIEditor::stayInText() {
-	int currentLineLength = _arrayBuffer[_currentLine].length();
+void XIEditor::insertLine(std::string line, int insertHere) {
+	if (_usedLines == _capacity)
+		resize(_capacity+1);
+	
+	_usedLines++;
+	
+	for (int i = _usedLines - 1; i > insertHere; i--)
+		_arrayBuffer[i] = _arrayBuffer[i - 1];
+	_arrayBuffer[insertHere] = line;
+}
 
+bool XIEditor::stayInText() {
+	int currentLineLength = _arrayBuffer[_currentLine].length();
+	bool isCorrected = false;
 	//for going too far up
-	if (_currentLine < 0)
+	if (_currentLine < 0) {
 		_currentLine = 0;
+		isCorrected = true;
+	}
 	//for going too far down
-	if (_currentLine >= _capacity)
-		_currentLine = _capacity - 1;
+	if (_currentLine >= _usedLines) {
+		_currentLine = _usedLines - 1;
+		isCorrected = true;
+	}
 	//for going too far right
-	if (_currentChar >= currentLineLength)
+	if (_currentChar >= currentLineLength) {
 		_currentChar = currentLineLength - 1;
+		isCorrected = true;
+	}
 	//for going too far left
-	if (_currentChar < 0)
+	if (_currentChar < 0) {
 		_currentChar = 0;
+		isCorrected = true;
+	}
+	return isCorrected;
+}
+
+bool XIEditor::undo() {
+	if (_commands.isEmpty())
+		return false;
+	//will undo an action
+	switch (_commands.peek().getAction())
+	{
+		case Action::UP: {
+			_currentLine++;
+			_commands.pop();
+			break;
+		}
+		case Action::DOWN: {
+			_currentLine--;
+			_commands.pop();
+			break;
+		}
+		case Action::RIGHT: {
+			goLeft();
+			_commands.pop();
+			break;
+		}
+		case Action::LEFT: {
+			goRight();
+			_commands.pop();
+			break;
+		}
+		case Action::DEL_LINE: {
+			insertLine(_commands.peek().getChange(), _currentLine);
+			_commands.pop();
+			break;
+		}
+		default: return false;
+	}
+	return true;
 }
