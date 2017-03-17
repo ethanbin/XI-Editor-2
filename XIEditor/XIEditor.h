@@ -1,4 +1,3 @@
-#pragma once
 #include "StackInterface.h"
 //#include "ArrayStack.h"
 #include "LinkedStack.h"
@@ -35,7 +34,7 @@ class XIEditor {
 		//resizes an array to a given size
 		//if the given size is smaller than the current capacity, then addresses beyond resizeTo are lost.
 		//after resizing, usedLines is set to however many items were copied back into the array buffer.
-		void resize(int);
+		bool resize(int);
 
 		//deletes a line at the given location
 		void deleteLine(int);

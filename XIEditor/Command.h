@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COMMAND_
+#define COMMAND_
 #include "Enums.h"
 #include<string>
 class Command {
@@ -18,3 +19,4 @@ private:
 	Action::Action _action;
 	std::string _change;
 };
+#endif

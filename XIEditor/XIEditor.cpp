@@ -129,7 +129,7 @@ void XIEditor::userInput() {
 		case KeyCode::DEL_LINE: {
 			//push to stack the command and the line being deleted
 
-			if (_getch() == KeyCode::DEL_LINE) {
+			if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
 				_commands.push(Command(Action::DEL_LINE, _arrayBuffer[_currentLine]));
 				deleteLine(_currentLine);
 			}
@@ -173,7 +173,9 @@ void XIEditor::goLeft() {
 		}
 }
 
-void XIEditor::resize(int resizeTo) {
+bool XIEditor::resize(int resizeTo) {
+	if (resizeTo)
+		return false;
 	std::string *temp = new std::string[_capacity];
 	
 	int itemsCopied = 0;
@@ -189,12 +191,13 @@ void XIEditor::resize(int resizeTo) {
 	
 	_capacity = resizeTo;
 	_usedLines = itemsCopied;
+	return true;
 }
 
 void XIEditor::deleteLine(int deleteHere) {
 	for (int i = deleteHere; i < _usedLines - 1; i++)
 		_arrayBuffer[i] = _arrayBuffer[i + 1];
-	//resize(_capacity - 1);
+	resize(_capacity - 1);
 	_usedLines--;
 }
 
@@ -258,6 +261,11 @@ bool XIEditor::undo() {
 		}
 		case Action::LEFT: {
 			goRight();
+			_commands.pop();
+			break;
+		}
+		case Action::DEL_CHAR: {
+			_arrayBuffer[_currentLine].insert(_currentChar,_commands.peek().getChange());
 			_commands.pop();
 			break;
 		}
