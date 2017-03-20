@@ -143,6 +143,7 @@ void XIEditor::userInput() {
 			break;
 		}
 		case KeyCode::INSERT_ABOVE: {
+			_commands.push(Command(Action::INSERT_ABOVE));
 			insertLine("", _currentLine);
 			break;
 		}
@@ -277,6 +278,11 @@ bool XIEditor::undo() {
 		}
 		case Action::DEL_LINE: {
 			insertLine(_commands.peek().getChange(), _currentLine);
+			_commands.pop();
+			break;
+		}
+		case Action::INSERT_ABOVE: {
+			deleteLine(_currentLine);
 			_commands.pop();
 			break;
 		}

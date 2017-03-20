@@ -26,7 +26,8 @@ namespace Action
 		RIGHT,
 		LEFT,
 		DEL_CHAR,
-		DEL_LINE
+		DEL_LINE,
+		INSERT_ABOVE
 	};
 }
 #endif
