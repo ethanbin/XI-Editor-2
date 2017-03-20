@@ -195,9 +195,9 @@ bool XIEditor::resize(int resizeTo) {
 }
 
 void XIEditor::deleteLine(int deleteHere) {
+	_arrayBuffer[deleteHere] = "";
 	for (int i = deleteHere; i < _usedLines - 1; i++)
 		_arrayBuffer[i] = _arrayBuffer[i + 1];
-	resize(_capacity - 1);
 	_usedLines--;
 }
 
