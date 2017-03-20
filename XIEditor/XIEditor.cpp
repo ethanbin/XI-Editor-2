@@ -80,14 +80,16 @@ void XIEditor::userInput() {
 		case KeyCode::UP:
 		{
 			_currentLine--;
-			_commands.push(Command(Action::UP));
+			if (!stayInText())
+				_commands.push(Command(Action::UP));
 			break;
 		}
 		//move down
 		case KeyCode::DOWN:
 		{
 			_currentLine++;
-			_commands.push(Command(Action::DOWN));
+			if (!stayInText())
+				_commands.push(Command(Action::DOWN));
 			break;
 		}
 
@@ -95,14 +97,16 @@ void XIEditor::userInput() {
 		case KeyCode::RIGHT:
 		{
 			goRight();
-			_commands.push(Command(Action::RIGHT));
+			if (!stayInText())
+				_commands.push(Command(Action::RIGHT));
 			break;
 		}
 		//move left
 		case KeyCode::LEFT:
 		{
 			goLeft();
-			_commands.push(Command(Action::LEFT));
+			if (!stayInText())
+				_commands.push(Command(Action::LEFT));
 			break;
 		}
 		case KeyCode::ESC_1:
