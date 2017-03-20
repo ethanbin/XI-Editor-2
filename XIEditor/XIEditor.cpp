@@ -66,6 +66,9 @@ void XIEditor::printLines()
 			cout << _arrayBuffer[i] << endl;
 		}
 	}
+	//when there is nothing to print
+	if (_usedLines == 0)
+		cout << "*" << endl << " ^";
 }
 
 void XIEditor::userInput() {
