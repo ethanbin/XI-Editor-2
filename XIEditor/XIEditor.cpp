@@ -121,7 +121,7 @@ void XIEditor::userInput() {
 			//if the string is empty (no char to delete), delete the line.
 			if (_arrayBuffer[_currentLine] == "") {
 				deleteLine(_currentLine);
-				_commands.push(Command(Action::DEL_CHAR, std::string("")));
+				_commands.push(Command(Action::DEL_LINE, std::string("")));
 			}
 
 			else {
