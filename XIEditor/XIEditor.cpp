@@ -174,7 +174,7 @@ void XIEditor::goLeft() {
 }
 
 bool XIEditor::resize(int resizeTo) {
-	if (resizeTo)
+	if (resizeTo<0)
 		return false;
 	std::string *temp = new std::string[_capacity];
 	
@@ -204,9 +204,8 @@ void XIEditor::deleteLine(int deleteHere) {
 void XIEditor::insertLine(std::string line, int insertHere) {
 	if (_usedLines == _capacity)
 		resize(_capacity+1);
-	
 	_usedLines++;
-	
+
 	for (int i = _usedLines - 1; i > insertHere; i--)
 		_arrayBuffer[i] = _arrayBuffer[i - 1];
 	_arrayBuffer[insertHere] = line;
