@@ -228,8 +228,9 @@ bool XIEditor::stayInText() {
 		isCorrected = true;
 	}
 	//for going too far down
-	if (_currentLine > _usedLines) {
-		_currentLine = _usedLines - 1;
+	if (_currentLine >= _usedLines) {
+		if (_usedLines != 0)
+			_currentLine = _usedLines - 1;
 		isCorrected = true;
 	}
 	//for going too far right
