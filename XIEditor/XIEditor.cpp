@@ -71,90 +71,6 @@ void XIEditor::printLines()
 		cout << "*" << endl << " ^";
 }
 
-void XIEditor::userInput() {
-	char userInput = _getch();
-
-	switch (userInput)
-	{
-			//move up
-		case KeyCode::UP:
-		{
-			_currentLine--;
-			if (!stayInText())
-				_commands.push(Command(Action::UP, std::to_string(_currentChar)));
-			break;
-		}
-		//move down
-		case KeyCode::DOWN:
-		{
-			_currentLine++;
-			if (!stayInText())
-				_commands.push(Command(Action::DOWN, std::to_string(_currentChar)));
-			break;
-		}
-
-		//move right
-		case KeyCode::RIGHT:
-		{
-			goRight();
-			if (!stayInText())
-				_commands.push(Command(Action::RIGHT));
-			break;
-		}
-		//move left
-		case KeyCode::LEFT:
-		{
-			goLeft();
-			if (!stayInText())
-				_commands.push(Command(Action::LEFT));
-			break;
-		}
-		case KeyCode::ESC_1:
-		{
-			if (_getch() == KeyCode::ESC_2) {
-				exit(EXIT_SUCCESS);
-			}
-			break;
-		}
-		case KeyCode::DEL_CHAR:
-		{
-			//if the string is empty (no char to delete), delete the line.
-			if (_arrayBuffer[_currentLine] == "") {
-				deleteLine(_currentLine);
-				_commands.push(Command(Action::DEL_LINE, std::string("")));
-			}
-
-			else {
-				//push to stack the command and the letter being deleted
-				_commands.push(Command(Action::DEL_CHAR,
-					std::string(1, _arrayBuffer[_currentLine][_currentChar]))
-				);
-				_arrayBuffer[_currentLine].erase(_currentChar, 1);
-			}
-			break;
-		}
-		case KeyCode::DEL_LINE: {
-			//push to stack the command and the line being deleted
-
-			if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
-				_commands.push(Command(Action::DEL_LINE, _arrayBuffer[_currentLine]));
-				deleteLine(_currentLine);
-			}
-			break;
-		}
-		case KeyCode::INSERT_ABOVE: {
-			_commands.push(Command(Action::INSERT_ABOVE));
-			insertLine("", _currentLine);
-			break;
-		}
-		case KeyCode::UNDO: {
-			undo();
-			break;
-		}
-	}
-	stayInText();
-}
-
 void XIEditor::goRight() {
 	_currentChar++;
 	//if not at last line
@@ -244,6 +160,90 @@ bool XIEditor::stayInText() {
 		isCorrected = true;
 	}
 	return isCorrected;
+}
+
+void XIEditor::userInput() {
+	char userInput = _getch();
+
+	switch (userInput)
+	{
+			//move up
+		case KeyCode::UP:
+		{
+			_currentLine--;
+			if (!stayInText())
+				_commands.push(Command(Action::UP, std::to_string(_currentChar)));
+			break;
+		}
+		//move down
+		case KeyCode::DOWN:
+		{
+			_currentLine++;
+			if (!stayInText())
+				_commands.push(Command(Action::DOWN, std::to_string(_currentChar)));
+			break;
+		}
+
+		//move right
+		case KeyCode::RIGHT:
+		{
+			goRight();
+			if (!stayInText())
+				_commands.push(Command(Action::RIGHT));
+			break;
+		}
+		//move left
+		case KeyCode::LEFT:
+		{
+			goLeft();
+			if (!stayInText())
+				_commands.push(Command(Action::LEFT));
+			break;
+		}
+		case KeyCode::ESC_1:
+		{
+			if (_getch() == KeyCode::ESC_2) {
+				exit(EXIT_SUCCESS);
+			}
+			break;
+		}
+		case KeyCode::DEL_CHAR:
+		{
+			//if the string is empty (no char to delete), delete the line.
+			if (_arrayBuffer[_currentLine] == "") {
+				deleteLine(_currentLine);
+				_commands.push(Command(Action::DEL_LINE, std::string("")));
+			}
+
+			else {
+				//push to stack the command and the letter being deleted
+				_commands.push(Command(Action::DEL_CHAR,
+					std::string(1, _arrayBuffer[_currentLine][_currentChar]))
+				);
+				_arrayBuffer[_currentLine].erase(_currentChar, 1);
+			}
+			break;
+		}
+		case KeyCode::DEL_LINE: {
+			//push to stack the command and the line being deleted
+
+			if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
+				_commands.push(Command(Action::DEL_LINE, _arrayBuffer[_currentLine]));
+				deleteLine(_currentLine);
+			}
+			break;
+		}
+		case KeyCode::INSERT_ABOVE: {
+			_commands.push(Command(Action::INSERT_ABOVE));
+			insertLine("", _currentLine);
+			break;
+		}
+		case KeyCode::UNDO: {
+			undo();
+			break;
+		}
+	}
+	stayInText();
 }
 
 bool XIEditor::undo() {
