@@ -10,7 +10,7 @@ namespace KeyCode
 		LEFT = 'h',
 		DEL_CHAR = 'x',
 		DEL_LINE = 'd',
-		ESC_1 = ';',
+		ESC_1 = ':',
 		ESC_2 = 'q',
 		UNDO = 'u',
 		INSERT_BELOW = 'o',
