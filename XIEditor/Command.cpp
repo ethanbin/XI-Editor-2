@@ -15,6 +15,13 @@ CommandPlus::CommandPlus(Action::Action action, std::string change)
 	//record text that was changed, such as a deleted line
 	_change = change;
 }
+
+CommandPlus::CommandPlus(Action::Action action, int charPos)
+{
+	_action = action;
+	_charPos = charPos;
+}
+
 Action::Action CommandPlus::getAction() {
 	return _action;
 }
@@ -31,4 +38,14 @@ std::string CommandPlus::getChange()
 
 void CommandPlus::setChange(std::string change){
 	_change = change;
+}
+
+int CommandPlus::getCharPos()
+{
+	return _charPos;
+}
+
+void CommandPlus::setCharPos(int charPos)
+{
+	_charPos = charPos;
 }
