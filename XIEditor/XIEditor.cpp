@@ -172,7 +172,7 @@ void XIEditor::userInput() {
 		{
 			_currentLine--;
 			if (!stayInText())
-				_commands.push(CommandPlus(Action::UP, std::to_string(_currentChar)));
+				_commands.push(CommandPlus(Action::UP, _currentChar));
 			break;
 		}
 		//move down
@@ -180,7 +180,7 @@ void XIEditor::userInput() {
 		{
 			_currentLine++;
 			if (!stayInText())
-				_commands.push(CommandPlus(Action::DOWN, std::to_string(_currentChar)));
+				_commands.push(CommandPlus(Action::DOWN, _currentChar));
 			break;
 		}
 
@@ -255,14 +255,14 @@ bool XIEditor::undo() {
 	{
 		case Action::UP: {
 			//converts getChange to int
-			_currentChar = std::atoi(lastCommand.getChange().c_str());
+			_currentChar = lastCommand.getCharPos();
 			_currentLine++;
 			_commands.pop();
 			break;
 		}
 		case Action::DOWN: {
 			//converts getChange to int
-			_currentChar = std::atoi(lastCommand.getChange().c_str());
+			_currentChar = lastCommand.getCharPos();
 			_currentLine--;
 			_commands.pop();
 			break;
