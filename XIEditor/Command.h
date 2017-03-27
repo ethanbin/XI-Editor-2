@@ -1,12 +1,12 @@
-#ifndef COMMAND_
-#define COMMAND_
+#ifndef COMMANDPLUS_
+#define COMMANDPLUS_
 #include "Enums.h"
 #include<string>
-class Command {
+class CommandPlus {
 public:
-	Command(); //do not delete! this is needed to run program
-	Command(Action::Action);
-	Command(Action::Action, std::string);
+	CommandPlus(); //do not delete! this is needed to run program
+	CommandPlus(Action::Action);
+	CommandPlus(Action::Action, std::string);
 
 	Action::Action getAction();
 	void setAction(Action::Action);

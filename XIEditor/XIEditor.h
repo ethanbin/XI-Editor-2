@@ -51,7 +51,7 @@ class XIEditor {
 		bool undo();
 
 	private: //variables
-		LinkedStack<Command> _commands;
+		LinkedStack<CommandPlus> _commands;
 		std::string *_arrayBuffer;
 		int _capacity, _usedLines, _currentLine=0, _currentChar=0;
 };

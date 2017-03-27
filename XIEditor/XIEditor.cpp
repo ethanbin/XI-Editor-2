@@ -172,7 +172,7 @@ void XIEditor::userInput() {
 		{
 			_currentLine--;
 			if (!stayInText())
-				_commands.push(Command(Action::UP, std::to_string(_currentChar)));
+				_commands.push(CommandPlus(Action::UP, std::to_string(_currentChar)));
 			break;
 		}
 		//move down
@@ -180,7 +180,7 @@ void XIEditor::userInput() {
 		{
 			_currentLine++;
 			if (!stayInText())
-				_commands.push(Command(Action::DOWN, std::to_string(_currentChar)));
+				_commands.push(CommandPlus(Action::DOWN, std::to_string(_currentChar)));
 			break;
 		}
 
@@ -189,7 +189,7 @@ void XIEditor::userInput() {
 		{
 			goRight();
 			if (!stayInText())
-				_commands.push(Command(Action::RIGHT));
+				_commands.push(CommandPlus(Action::RIGHT));
 			break;
 		}
 		//move left
@@ -197,7 +197,7 @@ void XIEditor::userInput() {
 		{
 			goLeft();
 			if (!stayInText())
-				_commands.push(Command(Action::LEFT));
+				_commands.push(CommandPlus(Action::LEFT));
 			break;
 		}
 		case KeyCode::ESC_1:
@@ -212,12 +212,12 @@ void XIEditor::userInput() {
 			//if the string is empty (no char to delete), delete the line.
 			if (_arrayBuffer[_currentLine] == "") {
 				deleteLine(_currentLine);
-				_commands.push(Command(Action::DEL_LINE, std::string("")));
+				_commands.push(CommandPlus(Action::DEL_LINE, std::string("")));
 			}
 
 			else {
 				//push to stack the command and the letter being deleted
-				_commands.push(Command(Action::DEL_CHAR,
+				_commands.push(CommandPlus(Action::DEL_CHAR,
 					std::string(1, _arrayBuffer[_currentLine][_currentChar]))
 				);
 				_arrayBuffer[_currentLine].erase(_currentChar, 1);
@@ -228,13 +228,13 @@ void XIEditor::userInput() {
 			//push to stack the command and the line being deleted
 
 			if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
-				_commands.push(Command(Action::DEL_LINE, _arrayBuffer[_currentLine]));
+				_commands.push(CommandPlus(Action::DEL_LINE, _arrayBuffer[_currentLine]));
 				deleteLine(_currentLine);
 			}
 			break;
 		}
 		case KeyCode::INSERT_ABOVE: {
-			_commands.push(Command(Action::INSERT_ABOVE));
+			_commands.push(CommandPlus(Action::INSERT_ABOVE));
 			insertLine("", _currentLine);
 			break;
 		}
@@ -249,7 +249,7 @@ void XIEditor::userInput() {
 bool XIEditor::undo() {
 	if (_commands.isEmpty())
 		return false;
-	Command lastCommand = _commands.peek();
+	CommandPlus lastCommand = _commands.peek();
 	//will undo an action
 	switch (lastCommand.getAction())
 	{

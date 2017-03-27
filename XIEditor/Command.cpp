@@ -1,34 +1,34 @@
 #include"Command.h"
 
-Command::Command() {
+CommandPlus::CommandPlus() {
 }
 
-Command::Command(Action::Action command)
+CommandPlus::CommandPlus(Action::Action action)
 {
-	_action = command;
+	_action = action;
 }
 
-Command::Command(Action::Action command, std::string change)
+CommandPlus::CommandPlus(Action::Action action, std::string change)
 {
 	//records what Action was done
-	_action = command;
+	_action = action;
 	//record text that was changed, such as a deleted line
 	_change = change;
 }
-Action::Action Command::getAction() {
+Action::Action CommandPlus::getAction() {
 	return _action;
 }
 
-void Command::setAction(Action::Action command)
+void CommandPlus::setAction(Action::Action command)
 {
 	_action = command;
 }
 
-std::string Command::getChange()
+std::string CommandPlus::getChange()
 {
 	return _change;
 }
 
-void Command::setChange(std::string change){
+void CommandPlus::setChange(std::string change){
 	_change = change;
 }
