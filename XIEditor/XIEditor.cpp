@@ -171,7 +171,7 @@ void XIEditor::userInput() {
 		case KeyCode::UP:
 		{
 			_currentLine--;
-			if (!stayInText())
+			//if (!stayInText())
 				_commands.push(CommandPlus(Action::UP, _currentChar));
 			break;
 		}
@@ -179,7 +179,7 @@ void XIEditor::userInput() {
 		case KeyCode::DOWN:
 		{
 			_currentLine++;
-			if (!stayInText())
+			//if (!stayInText())
 				_commands.push(CommandPlus(Action::DOWN, _currentChar));
 			break;
 		}
@@ -188,7 +188,7 @@ void XIEditor::userInput() {
 		case KeyCode::RIGHT:
 		{
 			goRight();
-			if (!stayInText())
+			//if (!stayInText())
 				_commands.push(CommandPlus(Action::RIGHT));
 			break;
 		}
@@ -196,7 +196,7 @@ void XIEditor::userInput() {
 		case KeyCode::LEFT:
 		{
 			goLeft();
-			if (!stayInText())
+			//if (!stayInText())
 				_commands.push(CommandPlus(Action::LEFT));
 			break;
 		}
