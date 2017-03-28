@@ -14,7 +14,9 @@ namespace KeyCode
 		QUIT_2 = 'q',
 		UNDO = 'u',
 		INSERT_BELOW = 'o',
-		INSERT_ABOVE = 'O'
+		INSERT_ABOVE = 'O',
+		INSERT_MODE = 'i',
+		ESC = '\x1b'
 	};
 }
 
