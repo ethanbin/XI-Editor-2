@@ -200,9 +200,9 @@ void XIEditor::userInput() {
 				_commands.push(CommandPlus(Action::LEFT));
 			break;
 		}
-		case KeyCode::ESC_1:
+		case KeyCode::QUIT_1:
 		{
-			if (_getch() == KeyCode::ESC_2) {
+			if (_getch() == KeyCode::QUIT_2) {
 				exit(EXIT_SUCCESS);
 			}
 			break;
