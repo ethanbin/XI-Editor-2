@@ -22,6 +22,12 @@ CommandPlus::CommandPlus(Action::Action action, int charPos)
 	_charPos = charPos;
 }
 
+CommandPlus::CommandPlus(Action::Action action, std::string change, int charPos) {
+	_action = action;
+	_change = change;
+	_charPos = charPos;
+}
+
 Action::Action CommandPlus::getAction() {
 	return _action;
 }

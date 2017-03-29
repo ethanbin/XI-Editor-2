@@ -8,6 +8,7 @@ public:
 	CommandPlus(Action::Action);
 	CommandPlus(Action::Action, std::string);
 	CommandPlus(Action::Action, int);
+	CommandPlus(Action::Action, std::string, int);
 
 	Action::Action getAction();
 	void setAction(Action::Action);
