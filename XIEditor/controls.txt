@@ -22,10 +22,3 @@ Insert a new line and enter insert mode:
 Exit insert mode:	ESC
 
 Exit xi editor:	:q
-
-DEL_CHAR = 'x',
-DEL_LINE = 'd',
-
-INSERT_BELOW = 'o',
-INSERT_ABOVE = 'O',
-INSERT_MODE = 'i',
