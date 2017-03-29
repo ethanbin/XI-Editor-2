@@ -15,7 +15,7 @@ namespace KeyCode
 		UNDO = 'u',
 		INSERT_BELOW = 'o',
 		INSERT_ABOVE = 'O',
-		INSERT_CURSOR = 'i',
+		INSERT_HERE = 'i',
 		INSERT_START = 'I',
 		ESC = '\x1b'
 	};
@@ -30,7 +30,10 @@ namespace Action
 		LEFT,
 		DEL_CHAR,
 		DEL_LINE,
-		INSERT_ABOVE
+		INSERT_BELOW,
+		INSERT_ABOVE,
+		INSERT_HERE,
+		INSERT_START
 	};
 }
 #endif
