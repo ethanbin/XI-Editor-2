@@ -15,7 +15,8 @@ namespace KeyCode
 		UNDO = 'u',
 		INSERT_BELOW = 'o',
 		INSERT_ABOVE = 'O',
-		INSERT_MODE = 'i',
+		INSERT_CURSOR = 'i',
+		INSERT_START = 'I',
 		ESC = '\x1b'
 	};
 }
