@@ -1,11 +1,15 @@
 #include"Command.h"
 
 CommandPlus::CommandPlus() {
+	_change = "";
+	_charPos = 0;
 }
 
 CommandPlus::CommandPlus(Action::Action action)
 {
 	_action = action;
+	_change = "";
+	_charPos = 0;
 }
 
 CommandPlus::CommandPlus(Action::Action action, std::string change)
@@ -14,11 +18,13 @@ CommandPlus::CommandPlus(Action::Action action, std::string change)
 	_action = action;
 	//record text that was changed, such as a deleted line
 	_change = change;
+	_charPos = 0;
 }
 
 CommandPlus::CommandPlus(Action::Action action, int charPos)
 {
 	_action = action;
+	_change = "";
 	_charPos = charPos;
 }
 
