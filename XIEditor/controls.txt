@@ -1,0 +1,31 @@
+Navigating: 
+	up:	k
+	down:	j
+	right:	l
+	left:	h
+
+Delete a character:
+	In navigation mode:	x
+	(coming soon) In Editor mode:	DELETE
+
+Undo: u
+
+Enter insert mode:
+	(coming soon) At cursor:	i
+	(coming soon) At the start of the line:	I
+
+Insert a new line and enter insert mode:
+	Below the cursor:	o
+	Above the cursor:	O
+
+
+Exit insert mode:	ESC
+
+Exit xi editor:	:q
+
+DEL_CHAR = 'x',
+DEL_LINE = 'd',
+
+INSERT_BELOW = 'o',
+INSERT_ABOVE = 'O',
+INSERT_MODE = 'i',
