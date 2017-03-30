@@ -41,6 +41,7 @@ XIEditor::XIEditor(std::string fileName) {
 
 XIEditor::~XIEditor() {
 	delete[] _arrayBuffer;
+	_arrayBuffer = nullptr;
 }
 
 void XIEditor::start() {
