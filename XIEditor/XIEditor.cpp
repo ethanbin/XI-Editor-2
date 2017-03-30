@@ -43,6 +43,10 @@ XIEditor::~XIEditor() {
 	delete[] _arrayBuffer;
 }
 
+void XIEditor::start() {
+	commandMode();
+}
+
 //This method prints all visible content
 void XIEditor::printLines()
 {
