@@ -43,6 +43,9 @@ class XIEditor {
 		//whatever was on this line is pushed to the next line.
 		void insertLine(std::string, int);
 
+		//enters insert mode. 
+		//Here, a user can insert text or delete text (with backspace or delete)
+		//returns a string so the stack can know what to undo
 		std::string insertMode();
 
 		//prevents the carrot from going too far right 
