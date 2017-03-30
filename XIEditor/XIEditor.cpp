@@ -198,13 +198,19 @@ std::string XIEditor::modeInsert() {
 				break;
 			}
 			case '\r': {
+				//copy text to right of cursor
 				std::string temp = _arrayBuffer[_currentLine].substr(_currentChar,
-					_arrayBuffer[_currentLine].length() - _currentChar - 1);
+					_arrayBuffer[_currentLine].length() - _currentChar);
 
+				//delete text to right of cursor
 				_arrayBuffer[_currentLine].erase(_currentChar,
-					_arrayBuffer[_currentLine].length() - _currentChar - 1);
-
-				_arrayBuffer[_currentLine].insert(_currentChar++, input);
+					_arrayBuffer[_currentLine].length() - _currentChar);
+				
+				insertLine(temp, ++_currentLine);
+				_currentChar = 0;
+				//stayInText();
+				//_arrayBuffer[_currentLine].insert(_currentChar, temp);
+				break;
 			}
 			default: {
 				if (input[0] != '\b') {
