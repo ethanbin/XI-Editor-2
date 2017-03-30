@@ -15,5 +15,5 @@ void main(int argc, char *argv[]) {
 
 	system("cls");
 
-	editor.commandMode();
+	editor.start();
 }
