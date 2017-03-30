@@ -1,24 +1,22 @@
-Navigating: 
-	up:		k
-	down:	j
-	right:	l
-	left:	h
+Command Mode:
+	Navigation: 
+		up:				k
+		down:			j
+		right:			l
+		left:			h
 
-Delete a character:
-	In navigation mode:	x
-	(coming soon) In Editor mode:	DELETE
+	Delete a character:				x
 
-Undo: u
+	Undo:							u
 
-Enter insert mode:
-	(coming soon) At cursor:	i
-	(coming soon) At the start of the line:	I
+	Enter insert mode:
+		At cursor:					i
+		At the start of the line:	I
 
-Insert a new line and enter insert mode:
-	Below the cursor:	o
-	Above the cursor:	O
+	Insert newline & enter insert mode:
+		Below the cursor:			o
+		Above the cursor:			O
 
+	Exit insert mode:				ESC
 
-Exit insert mode:	ESC
-
-Exit xi editor:		:q
+	Exit xi editor:					:q
