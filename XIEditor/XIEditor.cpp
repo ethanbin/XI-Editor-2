@@ -1,6 +1,7 @@
 #include "XIEditor.h"
 #include "Enums.h"
 #include <iostream>
+#include<string>
 #include <fstream>
 #include <conio.h>
 
@@ -135,6 +136,54 @@ void XIEditor::insertLine(std::string line, int insertHere) {
 	_arrayBuffer[insertHere] = line;
 }
 
+std::string XIEditor::insertMode() {
+	std::string input;
+	std::string fullInput = "";
+	bool notEsc = true;
+	while (notEsc) 
+	{
+		system("cls");
+		printLines();
+		input = _getch();
+		
+		switch (input[0])
+		{
+			case KeyCode::ESC: {
+				notEsc = false;
+				break;
+			}
+			case 'à': {
+				_arrayBuffer[_currentLine].erase(_currentChar, 1);
+				break;
+			}
+			case '\b': {
+				_currentChar--;
+				if (!stayInText())
+					_arrayBuffer[_currentLine].erase(_currentChar, 1);
+				break;
+			}
+			case '\r': {
+				std::string temp = _arrayBuffer[_currentLine].substr(_currentChar,
+					_arrayBuffer[_currentLine].length() - _currentChar - 1);
+
+				_arrayBuffer[_currentLine].erase(_currentChar,
+					_arrayBuffer[_currentLine].length() - _currentChar - 1);
+
+				_arrayBuffer[_currentLine].insert(_currentChar++, input);
+			}
+			default: {
+				if (input[0] != '\b') {
+					fullInput += input;
+					input = input[0];
+					_arrayBuffer[_currentLine].insert(_currentChar++, input);
+				}
+				break;
+			}
+		}
+	}
+	return fullInput;
+}
+
 bool XIEditor::stayInText() {
 	int currentLineLength = _arrayBuffer[_currentLine].length();
 	bool isCorrected = false;
@@ -233,13 +282,34 @@ void XIEditor::userInput() {
 			}
 			break;
 		}
-		case KeyCode::INSERT_ABOVE: {
-			_commands.push(CommandPlus(Action::INSERT_ABOVE));
-			insertLine("", _currentLine);
-			break;
-		}
 		case KeyCode::UNDO: {
 			undo();
+			break;
+		}
+		case KeyCode::INSERT_ABOVE: {
+			_currentChar = 0; //set cursor to beginning of the line
+			_commands.push(CommandPlus(Action::INSERT_ABOVE));
+			insertLine("", _currentLine);
+			insertMode();
+			break;
+		}
+		case KeyCode::INSERT_BELOW: {
+			_commands.push(CommandPlus(Action::INSERT_BELOW));
+			insertLine("", ++_currentLine);
+			insertMode();
+			break;
+		}
+		case KeyCode::INSERT_HERE: {
+			std::string insertedText = insertMode();
+			int startingLocation = _currentChar;
+			_commands.push(CommandPlus(Action::INSERT_HERE, insertedText, startingLocation));
+			break;
+		}
+		case KeyCode::INSERT_START: {
+			_currentChar = 0;
+			int startingLocation = _currentChar;
+			std::string insertedText = insertMode();
+			_commands.push(CommandPlus(Action::INSERT_START, insertedText, startingLocation));
 			break;
 		}
 	}
