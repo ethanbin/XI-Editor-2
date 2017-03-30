@@ -215,108 +215,116 @@ std::string XIEditor::insertMode() {
 }
 
 void XIEditor::commandMode() {
-	char userInput = _getch();
+	char userInput;
 
-	switch (userInput)
+	bool notEsc = true;
+	while (notEsc)
 	{
-			//move up
-		case KeyCode::UP:
+		system("cls");
+		printLines();
+		userInput = _getch();
+
+		switch (userInput)
 		{
-			_currentLine--;
-			//if (!stayInText())
+				//move up
+			case KeyCode::UP:
+			{
+				_currentLine--;
+				//if (!stayInText())
 				_commands.push(CommandPlus(Action::UP, _currentChar));
-			break;
-		}
-		//move down
-		case KeyCode::DOWN:
-		{
-			_currentLine++;
-			//if (!stayInText())
+				break;
+			}
+			//move down
+			case KeyCode::DOWN:
+			{
+				_currentLine++;
+				//if (!stayInText())
 				_commands.push(CommandPlus(Action::DOWN, _currentChar));
-			break;
-		}
+				break;
+			}
 
-		//move right
-		case KeyCode::RIGHT:
-		{
-			goRight();
-			//if (!stayInText())
+			//move right
+			case KeyCode::RIGHT:
+			{
+				goRight();
+				//if (!stayInText())
 				_commands.push(CommandPlus(Action::RIGHT));
-			break;
-		}
-		//move left
-		case KeyCode::LEFT:
-		{
-			goLeft();
-			//if (!stayInText())
+				break;
+			}
+			//move left
+			case KeyCode::LEFT:
+			{
+				goLeft();
+				//if (!stayInText())
 				_commands.push(CommandPlus(Action::LEFT));
-			break;
-		}
-		case KeyCode::QUIT_1:
-		{
-			if (_getch() == KeyCode::QUIT_2) {
-				exit(EXIT_SUCCESS);
+				break;
 			}
-			break;
-		}
-		case KeyCode::DEL_CHAR:
-		{
-			//if the string is empty (no char to delete), delete the line.
-			if (_arrayBuffer[_currentLine] == "") {
-				deleteLine(_currentLine);
-				_commands.push(CommandPlus(Action::DEL_LINE, std::string("")));
+			case KeyCode::QUIT_1:
+			{
+				if (_getch() == KeyCode::QUIT_2) {
+					exit(EXIT_SUCCESS);
+				}
+				break;
 			}
+			case KeyCode::DEL_CHAR:
+			{
+				//if the string is empty (no char to delete), delete the line.
+				if (_arrayBuffer[_currentLine] == "") {
+					deleteLine(_currentLine);
+					_commands.push(CommandPlus(Action::DEL_LINE, std::string("")));
+				}
 
-			else {
-				//push to stack the command and the letter being deleted
-				_commands.push(CommandPlus(Action::DEL_CHAR,
-					std::string(1, _arrayBuffer[_currentLine][_currentChar]))
-				);
-				_arrayBuffer[_currentLine].erase(_currentChar, 1);
+				else {
+					//push to stack the command and the letter being deleted
+					_commands.push(CommandPlus(Action::DEL_CHAR,
+						std::string(1, _arrayBuffer[_currentLine][_currentChar]))
+					);
+					_arrayBuffer[_currentLine].erase(_currentChar, 1);
+				}
+				break;
 			}
-			break;
-		}
-		case KeyCode::DEL_LINE: {
-			//push to stack the command and the line being deleted
+			case KeyCode::DEL_LINE: {
+				//push to stack the command and the line being deleted
 
-			if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
-				_commands.push(CommandPlus(Action::DEL_LINE, _arrayBuffer[_currentLine]));
-				deleteLine(_currentLine);
+				if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
+					_commands.push(CommandPlus(Action::DEL_LINE, _arrayBuffer[_currentLine]));
+					deleteLine(_currentLine);
+				}
+				break;
 			}
-			break;
+			case KeyCode::UNDO: {
+				undo();
+				break;
+			}
+			case KeyCode::INSERT_ABOVE: {
+				_currentChar = 0; //set cursor to beginning of the line
+				_commands.push(CommandPlus(Action::INSERT_ABOVE));
+				insertLine("", _currentLine);
+				insertMode();
+				break;
+			}
+			case KeyCode::INSERT_BELOW: {
+				_commands.push(CommandPlus(Action::INSERT_BELOW));
+				insertLine("", ++_currentLine);
+				insertMode();
+				break;
+			}
+			case KeyCode::INSERT_HERE: {
+				std::string insertedText = insertMode();
+				int startingLocation = _currentChar;
+				_commands.push(CommandPlus(Action::INSERT_HERE, insertedText, startingLocation));
+				break;
+			}
+			case KeyCode::INSERT_START: {
+				_currentChar = 0;
+				int startingLocation = _currentChar;
+				std::string insertedText = insertMode();
+				_commands.push(CommandPlus(Action::INSERT_START, insertedText, startingLocation));
+				break;
+			}
 		}
-		case KeyCode::UNDO: {
-			undo();
-			break;
-		}
-		case KeyCode::INSERT_ABOVE: {
-			_currentChar = 0; //set cursor to beginning of the line
-			_commands.push(CommandPlus(Action::INSERT_ABOVE));
-			insertLine("", _currentLine);
-			insertMode();
-			break;
-		}
-		case KeyCode::INSERT_BELOW: {
-			_commands.push(CommandPlus(Action::INSERT_BELOW));
-			insertLine("", ++_currentLine);
-			insertMode();
-			break;
-		}
-		case KeyCode::INSERT_HERE: {
-			std::string insertedText = insertMode();
-			int startingLocation = _currentChar;
-			_commands.push(CommandPlus(Action::INSERT_HERE, insertedText, startingLocation));
-			break;
-		}
-		case KeyCode::INSERT_START: {
-			_currentChar = 0;
-			int startingLocation = _currentChar;
-			std::string insertedText = insertMode();
-			_commands.push(CommandPlus(Action::INSERT_START, insertedText, startingLocation));
-			break;
-		}
+		stayInText();
 	}
-	stayInText();
 }
 
 bool XIEditor::undo() {

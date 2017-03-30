@@ -13,12 +13,7 @@ void main(int argc, char *argv[]) {
 		"l to move right, " +
 		"h to move left.\n\n\n";
 
-	while (true)
-	{
-		system("cls");
-		std::cout << startMsg;
+	system("cls");
 
-		editor.printLines();
-		editor.userInput();
-	}
+	editor.commandMode();
 }
