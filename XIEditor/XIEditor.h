@@ -15,15 +15,12 @@ class XIEditor {
 
 		~XIEditor();
 
-		//returns string with file's text with a star and carrot as a cursor
-		void printLines();
-
-		/*accepts char and compares it to KeyCode, 
-		moves index and/or carrot depending on input,
-		ensures cursor does not go beyond the text*/
-		void commandMode();
+		void start();
 
 	private: //functions
+
+		//returns string with file's text with a star and carrot as a cursor
+		void printLines();
 
 		//move right. if going right goes past text, go to beginning of next line.
 		void goRight();
@@ -43,14 +40,19 @@ class XIEditor {
 		//whatever was on this line is pushed to the next line.
 		void insertLine(std::string, int);
 
+		//prevents the carrot from going too far right 
+		//returns true if the function corrected the cursor position
+		bool stayInText();
+
 		//enters insert mode. 
 		//Here, a user can insert text or delete text (with backspace or delete)
 		//returns a string so the stack can know what to undo
 		std::string insertMode();
 
-		//prevents the carrot from going too far right 
-		//returns true if the function corrected the cursor position
-		bool stayInText();
+		/*accepts char and compares it to KeyCode,
+		moves index and/or carrot depending on input,
+		ensures cursor does not go beyond the text*/
+		void commandMode();
 
 		//undo last command commited by user. commands are tracked by stack
 		bool undo();
