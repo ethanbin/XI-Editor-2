@@ -44,7 +44,7 @@ XIEditor::~XIEditor() {
 }
 
 void XIEditor::start() {
-	commandMode();
+	modeCommand();
 }
 
 //This method prints all visible content
@@ -167,7 +167,7 @@ bool XIEditor::stayInText() {
 	return isCorrected;
 }
 
-std::string XIEditor::insertMode() {
+std::string XIEditor::modeInsert() {
 	std::string input;
 	std::string fullInput = "";
 	bool notEsc = true;
@@ -218,7 +218,7 @@ std::string XIEditor::insertMode() {
 	return fullInput;
 }
 
-void XIEditor::commandMode() {
+void XIEditor::modeCommand() {
 	char userInput;
 
 	bool notEsc = true;
@@ -304,17 +304,17 @@ void XIEditor::commandMode() {
 				_currentChar = 0; //set cursor to beginning of the line
 				_commands.push(CommandPlus(Action::INSERT_ABOVE));
 				insertLine("", _currentLine);
-				insertMode();
+				modeInsert();
 				break;
 			}
 			case KeyCode::INSERT_BELOW: {
 				_commands.push(CommandPlus(Action::INSERT_BELOW));
 				insertLine("", ++_currentLine);
-				insertMode();
+				modeInsert();
 				break;
 			}
 			case KeyCode::INSERT_HERE: {
-				std::string insertedText = insertMode();
+				std::string insertedText = modeInsert();
 				int startingLocation = _currentChar;
 				_commands.push(CommandPlus(Action::INSERT_HERE, insertedText, startingLocation));
 				break;
@@ -322,7 +322,7 @@ void XIEditor::commandMode() {
 			case KeyCode::INSERT_START: {
 				_currentChar = 0;
 				int startingLocation = _currentChar;
-				std::string insertedText = insertMode();
+				std::string insertedText = modeInsert();
 				_commands.push(CommandPlus(Action::INSERT_START, insertedText, startingLocation));
 				break;
 			}

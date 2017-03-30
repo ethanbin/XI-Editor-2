@@ -47,12 +47,12 @@ class XIEditor {
 		//enters insert mode. 
 		//Here, a user can insert text or delete text (with backspace or delete)
 		//returns a string so the stack can know what to undo
-		std::string insertMode();
+		std::string modeInsert();
 
 		/*accepts char and compares it to KeyCode,
 		moves index and/or carrot depending on input,
 		ensures cursor does not go beyond the text*/
-		void commandMode();
+		void modeCommand();
 
 		//undo last command commited by user. commands are tracked by stack
 		bool undo();
