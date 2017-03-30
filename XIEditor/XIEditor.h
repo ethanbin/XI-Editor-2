@@ -43,6 +43,8 @@ class XIEditor {
 		//whatever was on this line is pushed to the next line.
 		void insertLine(std::string, int);
 
+		std::string insertMode();
+
 		//prevents the carrot from going too far right 
 		//returns true if the function corrected the cursor position
 		bool stayInText();
