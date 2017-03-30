@@ -136,6 +136,33 @@ void XIEditor::insertLine(std::string line, int insertHere) {
 	_arrayBuffer[insertHere] = line;
 }
 
+bool XIEditor::stayInText() {
+	int currentLineLength = _arrayBuffer[_currentLine].length();
+	bool isCorrected = false;
+	//for going too far up
+	if (_currentLine < 0) {
+		_currentLine = 0;
+		isCorrected = true;
+	}
+	//for going too far down
+	if (_currentLine >= _usedLines) {
+		if (_usedLines != 0)
+			_currentLine = _usedLines - 1;
+		isCorrected = true;
+	}
+	//for going too far right
+	if (_currentChar >= currentLineLength) {
+		_currentChar = currentLineLength - 1;
+		isCorrected = true;
+	}
+	//for going too far left
+	if (_currentChar < 0) {
+		_currentChar = 0;
+		isCorrected = true;
+	}
+	return isCorrected;
+}
+
 std::string XIEditor::insertMode() {
 	std::string input;
 	std::string fullInput = "";
@@ -185,33 +212,6 @@ std::string XIEditor::insertMode() {
 		}
 	}
 	return fullInput;
-}
-
-bool XIEditor::stayInText() {
-	int currentLineLength = _arrayBuffer[_currentLine].length();
-	bool isCorrected = false;
-	//for going too far up
-	if (_currentLine < 0) {
-		_currentLine = 0;
-		isCorrected = true;
-	}
-	//for going too far down
-	if (_currentLine >= _usedLines) {
-		if (_usedLines != 0)
-			_currentLine = _usedLines - 1;
-		isCorrected = true;
-	}
-	//for going too far right
-	if (_currentChar >= currentLineLength) {
-		_currentChar = currentLineLength - 1;
-		isCorrected = true;
-	}
-	//for going too far left
-	if (_currentChar < 0) {
-		_currentChar = 0;
-		isCorrected = true;
-	}
-	return isCorrected;
 }
 
 void XIEditor::commandMode() {
