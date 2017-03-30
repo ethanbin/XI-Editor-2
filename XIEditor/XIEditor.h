@@ -21,7 +21,7 @@ class XIEditor {
 		/*accepts char and compares it to KeyCode, 
 		moves index and/or carrot depending on input,
 		ensures cursor does not go beyond the text*/
-		void userInput();
+		void commandMode();
 
 	private: //functions
 

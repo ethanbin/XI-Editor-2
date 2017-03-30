@@ -214,7 +214,7 @@ bool XIEditor::stayInText() {
 	return isCorrected;
 }
 
-void XIEditor::userInput() {
+void XIEditor::commandMode() {
 	char userInput = _getch();
 
 	switch (userInput)
