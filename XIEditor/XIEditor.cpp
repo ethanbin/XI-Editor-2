@@ -153,6 +153,9 @@ std::string XIEditor::insertMode() {
 				break;
 			}
 			case 'à': {
+				_getch();	//à is the first part of the delete key, but S comes after it.
+							//a getch here will take in that extra S. 
+							//otherwise, the S will be read in when looping instead of user input.
 				_arrayBuffer[_currentLine].erase(_currentChar, 1);
 				break;
 			}
