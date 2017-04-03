@@ -20,20 +20,4 @@ namespace KeyCode
 		ESC = '\x1b'
 	};
 }
-
-namespace Action
-{//for recording actions in Command
-	enum Action {
-		UP,
-		DOWN,
-		RIGHT,
-		LEFT,
-		DEL_CHAR,
-		DEL_LINE,
-		INSERT_BELOW,
-		INSERT_ABOVE,
-		INSERT_HERE,
-		INSERT_START
-	};
-}
 #endif
