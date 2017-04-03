@@ -273,7 +273,7 @@ void XIEditor::modeCommand() {
 			case KeyCode::QUIT_1:
 			{
 				if (_getch() == KeyCode::QUIT_2) {
-					exit(EXIT_SUCCESS);
+					notEsc = false;
 				}
 				break;
 			}
