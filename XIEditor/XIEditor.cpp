@@ -242,7 +242,7 @@ void XIEditor::modeCommand() {
 			{
 				_currentLine--;
 				//if (!stayInText())
-				_commands.push(CommandPlus(Action::UP, _currentChar));
+				_commands.push(CommandPlus(KeyCode::UP, _currentChar));
 				break;
 			}
 			//move down
@@ -250,7 +250,7 @@ void XIEditor::modeCommand() {
 			{
 				_currentLine++;
 				//if (!stayInText())
-				_commands.push(CommandPlus(Action::DOWN, _currentChar));
+				_commands.push(CommandPlus(KeyCode::DOWN, _currentChar));
 				break;
 			}
 
@@ -259,7 +259,7 @@ void XIEditor::modeCommand() {
 			{
 				goRight();
 				//if (!stayInText())
-				_commands.push(CommandPlus(Action::RIGHT));
+				_commands.push(CommandPlus(KeyCode::RIGHT));
 				break;
 			}
 			//move left
@@ -267,7 +267,7 @@ void XIEditor::modeCommand() {
 			{
 				goLeft();
 				//if (!stayInText())
-				_commands.push(CommandPlus(Action::LEFT));
+				_commands.push(CommandPlus(KeyCode::LEFT));
 				break;
 			}
 			case KeyCode::QUIT_1:
@@ -282,12 +282,12 @@ void XIEditor::modeCommand() {
 				//if the string is empty (no char to delete), delete the line.
 				if (_arrayBuffer[_currentLine] == "") {
 					deleteLine(_currentLine);
-					_commands.push(CommandPlus(Action::DEL_LINE, std::string("")));
+					_commands.push(CommandPlus(KeyCode::DEL_LINE, std::string("")));
 				}
 
 				else {
 					//push to stack the command and the letter being deleted
-					_commands.push(CommandPlus(Action::DEL_CHAR,
+					_commands.push(CommandPlus(KeyCode::DEL_CHAR,
 						std::string(1, _arrayBuffer[_currentLine][_currentChar]))
 					);
 					_arrayBuffer[_currentLine].erase(_currentChar, 1);
@@ -298,7 +298,7 @@ void XIEditor::modeCommand() {
 				//push to stack the command and the line being deleted
 
 				if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
-					_commands.push(CommandPlus(Action::DEL_LINE, _arrayBuffer[_currentLine]));
+					_commands.push(CommandPlus(KeyCode::DEL_LINE, _arrayBuffer[_currentLine]));
 					deleteLine(_currentLine);
 				}
 				break;
@@ -309,13 +309,13 @@ void XIEditor::modeCommand() {
 			}
 			case KeyCode::INSERT_ABOVE: {
 				_currentChar = 0; //set cursor to beginning of the line
-				_commands.push(CommandPlus(Action::INSERT_ABOVE));
+				_commands.push(CommandPlus(KeyCode::INSERT_ABOVE));
 				insertLine("", _currentLine);
 				modeInsert();
 				break;
 			}
 			case KeyCode::INSERT_BELOW: {
-				_commands.push(CommandPlus(Action::INSERT_BELOW));
+				_commands.push(CommandPlus(KeyCode::INSERT_BELOW));
 				insertLine("", ++_currentLine);
 				modeInsert();
 				break;
@@ -323,14 +323,14 @@ void XIEditor::modeCommand() {
 			case KeyCode::INSERT_HERE: {
 				std::string insertedText = modeInsert();
 				int startingLocation = _currentChar;
-				_commands.push(CommandPlus(Action::INSERT_HERE, insertedText, startingLocation));
+				_commands.push(CommandPlus(KeyCode::INSERT_HERE, insertedText, startingLocation));
 				break;
 			}
 			case KeyCode::INSERT_START: {
 				_currentChar = 0;
 				int startingLocation = _currentChar;
 				std::string insertedText = modeInsert();
-				_commands.push(CommandPlus(Action::INSERT_START, insertedText, startingLocation));
+				_commands.push(CommandPlus(KeyCode::INSERT_START, insertedText, startingLocation));
 				break;
 			}
 		}
@@ -345,41 +345,41 @@ bool XIEditor::undo() {
 	//will undo an action
 	switch (lastCommand.getAction())
 	{
-		case Action::UP: {
+		case KeyCode::UP: {
 			//converts getChange to int
 			_currentChar = lastCommand.getCharPos();
 			_currentLine++;
 			_commands.pop();
 			break;
 		}
-		case Action::DOWN: {
+		case KeyCode::DOWN: {
 			//converts getChange to int
 			_currentChar = lastCommand.getCharPos();
 			_currentLine--;
 			_commands.pop();
 			break;
 		}
-		case Action::RIGHT: {
+		case KeyCode::RIGHT: {
 			goLeft();
 			_commands.pop();
 			break;
 		}
-		case Action::LEFT: {
+		case KeyCode::LEFT: {
 			goRight();
 			_commands.pop();
 			break;
 		}
-		case Action::DEL_CHAR: {
+		case KeyCode::DEL_CHAR: {
 			_arrayBuffer[_currentLine].insert(_currentChar,_commands.peek().getChange());
 			_commands.pop();
 			break;
 		}
-		case Action::DEL_LINE: {
+		case KeyCode::DEL_LINE: {
 			insertLine(_commands.peek().getChange(), _currentLine);
 			_commands.pop();
 			break;
 		}
-		case Action::INSERT_ABOVE: {
+		case KeyCode::INSERT_ABOVE: {
 			deleteLine(_currentLine);
 			_commands.pop();
 			break;

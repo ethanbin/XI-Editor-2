@@ -5,14 +5,14 @@ CommandPlus::CommandPlus() {
 	_charPos = 0;
 }
 
-CommandPlus::CommandPlus(Action::Action action)
+CommandPlus::CommandPlus(KeyCode::KeyCode action)
 {
 	_action = action;
 	_change = "";
 	_charPos = 0;
 }
 
-CommandPlus::CommandPlus(Action::Action action, std::string change)
+CommandPlus::CommandPlus(KeyCode::KeyCode action, std::string change)
 {
 	//records what Action was done
 	_action = action;
@@ -21,24 +21,24 @@ CommandPlus::CommandPlus(Action::Action action, std::string change)
 	_charPos = 0;
 }
 
-CommandPlus::CommandPlus(Action::Action action, int charPos)
+CommandPlus::CommandPlus(KeyCode::KeyCode action, int charPos)
 {
 	_action = action;
 	_change = "";
 	_charPos = charPos;
 }
 
-CommandPlus::CommandPlus(Action::Action action, std::string change, int charPos) {
+CommandPlus::CommandPlus(KeyCode::KeyCode action, std::string change, int charPos) {
 	_action = action;
 	_change = change;
 	_charPos = charPos;
 }
 
-Action::Action CommandPlus::getAction() {
+KeyCode::KeyCode CommandPlus::getAction() {
 	return _action;
 }
 
-void CommandPlus::setAction(Action::Action command)
+void CommandPlus::setAction(KeyCode::KeyCode command)
 {
 	_action = command;
 }

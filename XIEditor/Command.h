@@ -5,13 +5,13 @@
 class CommandPlus {
 public:
 	CommandPlus(); //do not delete! this is needed to run program
-	CommandPlus(Action::Action);
-	CommandPlus(Action::Action, std::string);
-	CommandPlus(Action::Action, int);
-	CommandPlus(Action::Action, std::string, int);
+	CommandPlus(KeyCode::KeyCode);
+	CommandPlus(KeyCode::KeyCode, std::string);
+	CommandPlus(KeyCode::KeyCode, int);
+	CommandPlus(KeyCode::KeyCode, std::string, int);
 
-	Action::Action getAction();
-	void setAction(Action::Action);
+	KeyCode::KeyCode getAction();
+	void setAction(KeyCode::KeyCode);
 	
 	std::string getChange();
 	void setChange(std::string);
@@ -21,7 +21,7 @@ public:
 
 
 private:
-	Action::Action _action;
+	KeyCode::KeyCode _action;
 	std::string _change;
 	int _charPos;
 };
