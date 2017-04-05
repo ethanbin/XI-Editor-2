@@ -120,3 +120,15 @@ Node<ItemType>* LinkedList<ItemType>::insertNode(int position, Node<ItemType>* n
 
 	return subChainPtr;
 }  // end insertNode
+
+template<class ItemType>
+bool LinkedList<ItemType>::isEmpty() const
+{
+	return itemCount == 0;
+}  // end isEmpty
+
+template<class ItemType>
+int LinkedList<ItemType>::getLength() const
+{
+	return itemCount;
+}  // end getCurrentSize
