@@ -1,4 +1,6 @@
-﻿//  Created by Frank M. Carrano and Timothy M. Henry.
+﻿#include "LinkedList.h"
+#include <cassert>
+//  Created by Frank M. Carrano and Timothy M. Henry.
 //  Copyright (c) 2017 Pearson Education, Hoboken, New Jersey.
 
 template<class ItemType>
@@ -24,26 +26,26 @@ bool LinkedList<ItemType>::remove(int position)
 		{
 			// Remove the first node in the chain
 			curPtr = headPtr; // Save pointer to node
-			headPtr = headPtr –>getNext();
+			headPtr = headPtr ->getNext();
 		}
 		else
 		{
 			// Find node that is before the one to remove
-			Node<ItemType>* prevPtr = getNodeAt(position − 1);
+			Node<ItemType>* prevPtr = getNodeAt(position - 1);
 
 			// Point to node to remove
-			curPtr = prevPtr –>getNext();
+			curPtr = prevPtr ->getNext();
 
 			// Disconnect indicated node from chain by connecting the
 			// prior node with the one after
-			prevPtr –>setNext(curPtr –>getNext());
+			prevPtr ->setNext(curPtr ->getNext());
 		} // end if
 
 		// Return node to system
-		curPtr –>setNext(nullptr);
+		curPtr ->setNext(nullptr);
 		delete curPtr;
 		curPtr = nullptr;
-		itemCount––; // Decrease count of entries
+		itemCount--; // Decrease count of entries
 	} // end if
 
 	return ableToRemove;
@@ -64,15 +66,24 @@ throw(PrecondViolatedExcept)
 	if (ableToGet)
 	{
 		Node<ItemType>* nodePtr = getNodeAt(position);
-		return nodePtr –>getItem();
+		return nodePtr ->getItem();
 	}
 	else
 	{
 		std::string message = "getEntry() called with an empty list or ";
 		message = message + "invalid position.";
-		throw(PrecondViolatedExcept(message));
+		//throw(PrecondViolatedExcept(message));
 	} // end if
 } // end getEntry
+
+template<class ItemType>
+ItemType LinkedList<ItemType>::replace(int position, const ItemType & newEntry) throw(PrecondViolatedExcept)
+{
+	ItemType toReturn = getEntry(position);
+	remove(position);
+	insert(position, newEntry);
+	return toReturn;
+}
 
 template<class ItemType>
 Node<ItemType>* LinkedList<ItemType>::getNodeAt(int position) const

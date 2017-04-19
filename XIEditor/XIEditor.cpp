@@ -22,27 +22,28 @@ XIEditor::XIEditor(std::string fileName) {
 	}
 
 	std::string lineCollector;
-	for (; !userFile.eof(); _capacity++)
+	for (; !userFile.eof(); _capacity++) {
 		getline(userFile, lineCollector);
+		//capacity+1 when inserting because LinkedList 
+			//starts with position 1, unlike an array
+		_listBuffer.insert(_capacity+1, lineCollector);
+	}
 
 	userFile.clear();
 	userFile.seekg(0);
+	
+	//_arrayBuffer = new std::string[_capacity];
 
-	_arrayBuffer = new std::string[_capacity];
-
-	for (int i = 0; !userFile.eof(); i++)
-		getline(userFile, _arrayBuffer[i]);
-
-	_currentLine = 0;
-	_currentChar = 0;
+//	for (int i = 0; !userFile.eof(); i++)
+//		_listBuffer.insert(userFile.getline());//getline(userFile, _arrayBuffer[i]);
+	
+	_currentLine = 1;
+	_currentChar = 1;
 	_usedLines = _capacity;
 	userFile.close();
 }
 
-XIEditor::~XIEditor() {
-	delete[] _arrayBuffer;
-	_arrayBuffer = nullptr;
-}
+XIEditor::~XIEditor() {}
 
 void XIEditor::start() {
 	modeCommand();
@@ -51,14 +52,13 @@ void XIEditor::start() {
 //This method prints all visible content
 void XIEditor::printLines()
 {
-	for (int i = 0; i < _usedLines; i++)
+	for (int i = 1; i < _usedLines+1; i++)
 	{
 		//This makes _currentLine relative to '*'
 		if (i == _currentLine)
 		{
 			cout << '*';
-			cout << _arrayBuffer[i] << endl;
-			cout << ' ';
+			cout << _listBuffer.getEntry(i) << endl;
 			//This makes current position relative to '^'
 			for (int j = 0; j < _currentChar; j++)
 			{
@@ -69,7 +69,7 @@ void XIEditor::printLines()
 		else
 		{
 			cout << ' ';
-			cout << _arrayBuffer[i] << endl;
+			cout << _listBuffer.getEntry(i) << endl;
 		}
 	}
 	//when there is nothing to print
@@ -80,10 +80,10 @@ void XIEditor::printLines()
 void XIEditor::goRight() {
 	_currentChar++;
 	//if not at last line
-	if (_currentLine < _capacity - 1)
+	if (_currentLine < _capacity)
 		//move cursor to start of next line when going too far right
-		if (_currentChar >= _arrayBuffer[_currentLine].length()) {
-			_currentChar = 0;
+		if (_currentChar > _listBuffer.getEntry(_currentLine).length()) {
+			_currentChar = 1;
 			_currentLine++;
 		}
 	}
@@ -91,18 +91,19 @@ void XIEditor::goRight() {
 void XIEditor::goLeft() {
 	_currentChar--;
 	//if at first line, keep cursor from going too far left
-	if (_currentLine <= 0) {
-		_currentLine = 0;
+	if (_currentLine < 1) {
+		_currentLine = 1;
 	}
 	//if not at first line
-	if (_currentLine > 0)
+	if (_currentLine > 1)
 		//move cursor to end of previous line when going too far left
-		if (_currentChar < 0) {
+		if (_currentChar < 1) {
 			_currentLine--;
-			_currentChar = _arrayBuffer[_currentLine].length() - 1;
+			_currentChar = _listBuffer.getEntry(_currentLine).length();
 		}
 }
 
+/*
 bool XIEditor::resize(int resizeTo) {
 	if (resizeTo<0)
 		return false;
@@ -123,46 +124,51 @@ bool XIEditor::resize(int resizeTo) {
 	_usedLines = itemsCopied;
 	return true;
 }
+*/
 
 void XIEditor::deleteLine(int deleteHere) {
-	_arrayBuffer[deleteHere] = "";
-	for (int i = deleteHere; i < _usedLines - 1; i++)
-		_arrayBuffer[i] = _arrayBuffer[i + 1];
+	//_arrayBuffer[deleteHere] = "";
+	//for (int i = deleteHere; i < _usedLines - 1; i++)
+	//	_arrayBuffer[i] = _arrayBuffer[i + 1];
+	_listBuffer.remove(deleteHere);
 	_usedLines--;
 }
 
 void XIEditor::insertLine(std::string line, int insertHere) {
+	/*
 	if (_usedLines == _capacity)
 		resize(_capacity+1);
-	_usedLines++;
 
 	for (int i = _usedLines - 1; i > insertHere; i--)
 		_arrayBuffer[i] = _arrayBuffer[i - 1];
 	_arrayBuffer[insertHere] = line;
+	*/
+	_usedLines++;
+	_listBuffer.insert(insertHere, line);
 }
 
 bool XIEditor::stayInText() {
-	int currentLineLength = _arrayBuffer[_currentLine].length();
 	bool isCorrected = false;
 	//for going too far up
-	if (_currentLine < 0) {
-		_currentLine = 0;
+	if (_currentLine < 1) {
+		_currentLine = 1;
 		isCorrected = true;
 	}
 	//for going too far down
-	if (_currentLine >= _usedLines) {
+	if (_currentLine > _usedLines) {
 		if (_usedLines != 0)
-			_currentLine = _usedLines - 1;
+			_currentLine = _usedLines;
 		isCorrected = true;
 	}
+	int currentLineLength = _listBuffer.getEntry(_currentLine).length();
 	//for going too far right
-	if (_currentChar >= currentLineLength) {
-		_currentChar = currentLineLength - 1;
+	if (_currentChar > currentLineLength) {
+		_currentChar = currentLineLength;
 		isCorrected = true;
 	}
 	//for going too far left
-	if (_currentChar < 0) {
-		_currentChar = 0;
+	if (_currentChar < 1) {
+		_currentChar = 1;
 		isCorrected = true;
 	}
 	return isCorrected;
@@ -184,30 +190,43 @@ std::string XIEditor::modeInsert() {
 				notEsc = false;
 				break;
 			}
+			//this case takes care of special keys like delete and arrow keys
 			case 'à': {
-				_getch();	//à is the first part of the delete key, but S comes after it.
-							//a getch here will take in that extra S. 
-							//otherwise, the S will be read in when looping instead of user input.
-				_arrayBuffer[_currentLine].erase(_currentChar, 1);
+				//certain special keys read in 2 characters, not just one.
+				//these keys first read in à then another letter.
+				//this extra getch takes in the second part of the special key
+				char const arrowLeft = 'K', arrowRight = 'M', arrowUp = 'H', arrowDown = 'P', del = 'S';
+				char secChar = _getch();	
+				switch (secChar) {
+					case del: {
+						std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
+						_listBuffer.replace(_currentLine, change);
+						break;
+					}
+				}
 				break;
 			}
 			case '\b': {
 				_currentChar--;
-				if (!stayInText())
-					_arrayBuffer[_currentLine].erase(_currentChar, 1);
+				if (!stayInText()) {
+					std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
+					_listBuffer.replace(_currentLine, change);
+				}
 				break;
 			}
 			case '\r': {
 				//copy text to right of cursor
-				std::string temp = _arrayBuffer[_currentLine].substr(_currentChar,
-					_arrayBuffer[_currentLine].length() - _currentChar);
+				std::string temp = _listBuffer.getEntry(_currentLine).substr(_currentChar-1,
+					_listBuffer.getEntry(_currentLine).length() - _currentChar+1);
 
 				//delete text to right of cursor
-				_arrayBuffer[_currentLine].erase(_currentChar,
-					_arrayBuffer[_currentLine].length() - _currentChar);
+				std::string cut = _listBuffer.getEntry(_currentLine).erase(_currentChar-1,
+					_listBuffer.getEntry(_currentLine).length() - _currentChar+1);
+
+				_listBuffer.replace(_currentLine, cut);
 				
 				insertLine(temp, ++_currentLine);
-				_currentChar = 0;
+				_currentChar = 1;
 				//stayInText();
 				//_arrayBuffer[_currentLine].insert(_currentChar, temp);
 				break;
@@ -216,7 +235,8 @@ std::string XIEditor::modeInsert() {
 				if (input[0] != '\b') {
 					fullInput += input;
 					input = input[0];
-					_arrayBuffer[_currentLine].insert(_currentChar++, input);
+					std::string edited = _listBuffer.getEntry(_currentLine).insert((_currentChar++)-1, input);
+					_listBuffer.replace(_currentLine, edited);
 				}
 				break;
 			}
@@ -280,7 +300,7 @@ void XIEditor::modeCommand() {
 			case KeyCode::DEL_CHAR:
 			{
 				//if the string is empty (no char to delete), delete the line.
-				if (_arrayBuffer[_currentLine] == "") {
+				if (_listBuffer.getEntry(_currentLine) == "") {
 					deleteLine(_currentLine);
 					_commands.push(CommandPlus(KeyCode::DEL_LINE, std::string("")));
 				}
@@ -288,17 +308,18 @@ void XIEditor::modeCommand() {
 				else {
 					//push to stack the command and the letter being deleted
 					_commands.push(CommandPlus(KeyCode::DEL_CHAR,
-						std::string(1, _arrayBuffer[_currentLine][_currentChar]))
+						std::string(1, _listBuffer.getEntry(_currentLine)[_currentChar-1]))
 					);
-					_arrayBuffer[_currentLine].erase(_currentChar, 1);
+					std::string changed = _listBuffer.getEntry(_currentLine).erase(_currentChar-1, 1);
+					_listBuffer.replace(_currentLine, changed);
 				}
 				break;
 			}
 			case KeyCode::DEL_LINE: {
 				//push to stack the command and the line being deleted
 
-				if (_getch() == KeyCode::DEL_LINE && _usedLines > 0) {
-					_commands.push(CommandPlus(KeyCode::DEL_LINE, _arrayBuffer[_currentLine]));
+				if (_getch() == KeyCode::DEL_LINE && _usedLines > 1) {
+					_commands.push(CommandPlus(KeyCode::DEL_LINE, _listBuffer.getEntry(_currentLine)));
 					deleteLine(_currentLine);
 				}
 				break;
@@ -370,7 +391,9 @@ bool XIEditor::undo() {
 			break;
 		}
 		case KeyCode::DEL_CHAR: {
-			_arrayBuffer[_currentLine].insert(_currentChar,_commands.peek().getChange());
+			std::string edited = _listBuffer.getEntry(_currentLine).insert(_currentChar-1,
+															_commands.peek().getChange());
+			_listBuffer.replace(_currentLine, edited);
 			_commands.pop();
 			break;
 		}

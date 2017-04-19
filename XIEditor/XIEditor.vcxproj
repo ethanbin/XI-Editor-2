@@ -153,7 +153,9 @@
   <ItemGroup>
     <ClInclude Include="Command.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedStack.h" />
+    <ClInclude Include="ListInterface.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="StackInterface.h" />
     <ClInclude Include="XIEditor.h" />

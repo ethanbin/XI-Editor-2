@@ -30,12 +30,13 @@ private:
 
 public:
 	LinkedList();
-	LinkedList(const LinkedList<ItemType>& aList);
+	//LinkedList(const LinkedList<ItemType>& aList);
 	virtual ~LinkedList();
 
 	bool isEmpty() const;
 	int getLength() const;
 	bool insert(int newPosition, const ItemType& newEntry);
+	Node<ItemType>* insertNode(int, Node<ItemType>*, Node<ItemType>*);
 	bool remove(int position);
 	void clear();
 
@@ -45,7 +46,7 @@ public:
 
 	/** @throw PrecondViolatedExcept if position < 1 or
 	position > getLength(). */
-	void replace(int position, const ItemType& newEntry)
+	ItemType replace(int position, const ItemType& newEntry)
 		throw(PrecondViolatedExcept);
 }; // end LinkedList
 

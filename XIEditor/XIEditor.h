@@ -1,5 +1,5 @@
 #include "StackInterface.h"
-//#include "ArrayStack.h"
+#include "LinkedList.h"
 #include "LinkedStack.h"
 #include "Command.h"
 #include <fstream>
@@ -31,7 +31,7 @@ class XIEditor {
 		//resizes an array to a given size
 		//if the given size is smaller than the current capacity, then addresses beyond resizeTo are lost.
 		//after resizing, usedLines is set to however many items were copied back into the array buffer.
-		bool resize(int);
+		//bool resize(int);
 
 		//deletes a line at the given location
 		void deleteLine(int);
@@ -59,6 +59,7 @@ class XIEditor {
 
 	private: //variables
 		LinkedStack<CommandPlus> _commands;
-		std::string *_arrayBuffer;
-		int _capacity, _usedLines, _currentLine=0, _currentChar=0;
+
+		LinkedList<std::string> _listBuffer;
+		int _capacity, _usedLines, _currentLine=1, _currentChar=1;
 };
