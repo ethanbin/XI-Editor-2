@@ -203,7 +203,31 @@ std::string XIEditor::modeInsert() {
 						_listBuffer.replace(_currentLine, change);
 						break;
 					}
+					case arrowRight: {
+						_currentChar++;
+						int currentLineLength = _listBuffer.getEntry(_currentLine).length();
+						//for going too far right
+						if (_currentChar > currentLineLength + 1)
+							_currentChar = currentLineLength+1;
+						break;
+					}
+					case arrowLeft: {
+						_currentChar--;
+						stayInText();
+						break;
+					}
+					case arrowUp: {
+						_currentLine--;
+						stayInText();
+						break;
+					}
+					case arrowDown: {
+						_currentLine++;
+						stayInText();
+						break;
+					}
 				}
+				
 				break;
 			}
 			case '\b': {
