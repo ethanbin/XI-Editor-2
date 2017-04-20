@@ -9,14 +9,18 @@ Command Mode:
 
 	Undo:							u
 
-	Enter insert mode:
+	Enter Insert mode:
 		At cursor:					i
 		At the start of the line:	I
 
-	Insert newline & enter insert mode:
+	Insert newline & enter Insert mode:
 		Below the cursor:			o
 		Above the cursor:			O
 
-	Exit insert mode:				ESC
+	Exit Insert mode:				ESC
 
-	Exit xi editor:					:q
+	Enter Last Line mode:			:
+	Last Line mode commands:
+		quit:						q
+		write (save):				w
+		write (save) and quit:		wq
