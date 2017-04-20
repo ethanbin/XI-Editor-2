@@ -9,10 +9,11 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::ifstream;
+using std::ofstream;
 
 XIEditor::XIEditor(std::string fileName) {
 	_capacity = 0;
-
+	_fileName = fileName;
 	ifstream userFile;
 	userFile.open(fileName);
 
@@ -284,13 +285,32 @@ std::string XIEditor::modeInsert() {
 }
 
 bool XIEditor::modeLastLine() {
+	std::string quit = "q", write = "w", writeQuit = "wq";
 	cout << "\n\n\n";
 	cout << ":";
 	std::string input;
 	cin >> input;
-	if (input == "q")
+	if (input == quit)
 		return false;
+	if (input == write){
+		ofstream txtFile;
+		txtFile.open(_fileName);
+		for (int i = 1; i <= _listBuffer.getLength(); i++)
+			txtFile << _listBuffer.getEntry(i) << endl;
+		txtFile.close();
+	}
+	if (input == writeQuit) {
+		ofstream txtFile;
+		txtFile.open(_fileName);
 
+		//print to file and prevent extra endline at end of file
+		for (int i = 1; i < _usedLines; i++)
+			txtFile << _listBuffer.getEntry(i) << endl;
+		txtFile << _listBuffer.getEntry(_usedLines);
+
+		txtFile.close();
+		return false;
+	}
 }
 
 void XIEditor::modeCommand() {

@@ -52,6 +52,9 @@ class XIEditor {
 		//returns a string so the stack can know what to undo
 		std::string modeInsert();
 
+		//enters last line mode.
+		//can execute powerful commands, such as write (save), quit, etc.
+		//returns false if quit command used
 		bool modeLastLine();
 
 		/*accepts char and compares it to KeyCode,
@@ -63,8 +66,8 @@ class XIEditor {
 		bool undo();
 
 	private: //variables
+		std::string _fileName;
 		LinkedStack<CommandPlus> _commands;
-
 		LinkedList<std::string> _listBuffer;
 		int _capacity, _usedLines, _currentLine=1, _currentChar=1;
 };
