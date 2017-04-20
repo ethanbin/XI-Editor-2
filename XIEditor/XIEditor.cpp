@@ -130,7 +130,10 @@ void XIEditor::deleteLine(int deleteHere) {
 	//_arrayBuffer[deleteHere] = "";
 	//for (int i = deleteHere; i < _usedLines - 1; i++)
 	//	_arrayBuffer[i] = _arrayBuffer[i + 1];
-	_listBuffer.remove(deleteHere);
+	if (_usedLines > 1)
+		_listBuffer.remove(deleteHere);
+	else if (_usedLines == 0)
+		_listBuffer.replace(deleteHere, "");
 	_usedLines--;
 }
 
@@ -345,8 +348,7 @@ void XIEditor::modeCommand() {
 			}
 			case KeyCode::DEL_LINE: {
 				//push to stack the command and the line being deleted
-
-				if (_getch() == KeyCode::DEL_LINE && _usedLines > 1) {
+				if (_getch() == KeyCode::DEL_LINE && _usedLines >= 0) {
 					_commands.push(CommandPlus(KeyCode::DEL_LINE, _listBuffer.getEntry(_currentLine)));
 					deleteLine(_currentLine);
 				}
