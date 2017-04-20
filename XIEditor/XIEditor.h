@@ -52,6 +52,8 @@ class XIEditor {
 		//returns a string so the stack can know what to undo
 		std::string modeInsert();
 
+		bool modeLastLine();
+
 		/*accepts char and compares it to KeyCode,
 		moves index and/or carrot depending on input,
 		ensures cursor does not go beyond the text*/

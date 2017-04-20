@@ -6,6 +6,7 @@
 #include <conio.h>
 
 using std::cout;
+using std::cin;
 using std::endl;
 using std::ifstream;
 
@@ -282,6 +283,16 @@ std::string XIEditor::modeInsert() {
 	return fullInput;
 }
 
+bool XIEditor::modeLastLine() {
+	cout << "\n\n\n";
+	cout << ":";
+	std::string input;
+	cin >> input;
+	if (input == "q")
+		return false;
+
+}
+
 void XIEditor::modeCommand() {
 	char userInput;
 
@@ -327,13 +338,6 @@ void XIEditor::modeCommand() {
 				goLeft();
 				if (!stayInText())
 				_commands.push(CommandPlus(KeyCode::LEFT));
-				break;
-			}
-			case KeyCode::QUIT_1:
-			{
-				if (_getch() == KeyCode::QUIT_2) {
-					notEsc = false;
-				}
 				break;
 			}
 			case KeyCode::DEL_CHAR:
@@ -390,6 +394,13 @@ void XIEditor::modeCommand() {
 				int startingLocation = _currentChar;
 				std::string insertedText = modeInsert();
 				_commands.push(CommandPlus(KeyCode::INSERT_START, insertedText, startingLocation));
+				break;
+			}
+			case KeyCode::LAST_LINE:
+			{
+				if (!modeLastLine()) {
+					notEsc = false;
+				}
 				break;
 			}
 		}
