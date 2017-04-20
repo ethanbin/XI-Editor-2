@@ -126,15 +126,19 @@ bool XIEditor::resize(int resizeTo) {
 }
 */
 
-void XIEditor::deleteLine(int deleteHere) {
-	//_arrayBuffer[deleteHere] = "";
-	//for (int i = deleteHere; i < _usedLines - 1; i++)
-	//	_arrayBuffer[i] = _arrayBuffer[i + 1];
-	if (_usedLines > 1)
+bool XIEditor::deleteLine(int deleteHere) {
+	if (deleteHere < 1)
+		return false;
+
+	if (_usedLines > 1) {
 		_listBuffer.remove(deleteHere);
-	else if (_usedLines == 0)
+		_usedLines--;
+	}
+	else if (_usedLines == 1) {
 		_listBuffer.replace(deleteHere, "");
-	_usedLines--;
+		_usedLines = 1;
+	}
+	return true;
 }
 
 void XIEditor::insertLine(std::string line, int insertHere) {

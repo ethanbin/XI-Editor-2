@@ -33,15 +33,18 @@ class XIEditor {
 		//after resizing, usedLines is set to however many items were copied back into the array buffer.
 		//bool resize(int);
 
-		//deletes a line at the given location
-		void deleteLine(int);
+		//deletes the node for a line at the given location.
+		//when deleting the last remaining line/node, 
+		//	the string of the node is replaced with an empty string.
+		//returns true if line to delete is greater than 1.
+		bool deleteLine(int);
 		
 		//inserts a new line on indicated line.
 		//whatever was on this line is pushed to the next line.
 		void insertLine(std::string, int);
 
-		//prevents the carrot from going too far right 
-		//returns true if the function corrected the cursor position
+		//prevents the carrot from going too far right.
+		//returns true if the function corrected the cursor position.
 		bool stayInText();
 
 		//enters insert mode. 
