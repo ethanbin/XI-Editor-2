@@ -205,10 +205,12 @@ std::string XIEditor::modeInsert() {
 				char const arrowLeft = 'K', arrowRight = 'M', arrowUp = 'H', arrowDown = 'P', del = 'S';
 				char secChar = _getch();	
 				switch (secChar) {
-					case del: {
-						std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
+				case del: {
+						if (_listBuffer.getEntry(_currentLine).length() > 0) {
+							std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
 						_listBuffer.replace(_currentLine, change);
 						break;
+						}
 					}
 					case arrowRight: {
 						_currentChar++;
