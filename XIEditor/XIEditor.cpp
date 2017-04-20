@@ -298,16 +298,18 @@ void XIEditor::modeCommand() {
 			case KeyCode::UP:
 			{
 				_currentLine--;
-				//if (!stayInText())
-				_commands.push(CommandPlus(KeyCode::UP, _currentChar));
+				if (_currentLine != 0)
+					//if (!stayInText())
+						_commands.push(CommandPlus(KeyCode::UP, _currentChar));
 				break;
 			}
 			//move down
 			case KeyCode::DOWN:
 			{
 				_currentLine++;
-				//if (!stayInText())
-				_commands.push(CommandPlus(KeyCode::DOWN, _currentChar));
+				if (_currentLine != _usedLines + 1)
+					//if (!stayInText())
+						_commands.push(CommandPlus(KeyCode::DOWN, _currentChar));
 				break;
 			}
 
@@ -315,7 +317,7 @@ void XIEditor::modeCommand() {
 			case KeyCode::RIGHT:
 			{
 				goRight();
-				//if (!stayInText())
+				if (!stayInText())
 				_commands.push(CommandPlus(KeyCode::RIGHT));
 				break;
 			}
@@ -323,7 +325,7 @@ void XIEditor::modeCommand() {
 			case KeyCode::LEFT:
 			{
 				goLeft();
-				//if (!stayInText())
+				if (!stayInText())
 				_commands.push(CommandPlus(KeyCode::LEFT));
 				break;
 			}
