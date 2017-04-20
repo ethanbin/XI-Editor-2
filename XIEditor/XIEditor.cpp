@@ -391,8 +391,8 @@ void XIEditor::modeCommand() {
 				break;
 			}
 			case KeyCode::INSERT_ABOVE: {
+				_commands.push(CommandPlus(KeyCode::INSERT_ABOVE,_currentChar));
 				_currentChar = 0; //set cursor to beginning of the line
-				_commands.push(CommandPlus(KeyCode::INSERT_ABOVE));
 				insertLine("", _currentLine);
 				modeInsert();
 				break;
@@ -473,6 +473,13 @@ bool XIEditor::undo() {
 		}
 		case KeyCode::INSERT_ABOVE: {
 			deleteLine(_currentLine);
+			_commands.pop();
+			break;
+		}
+		case KeyCode::INSERT_BELOW: {
+			deleteLine(_currentLine);
+			_currentLine--;
+			_currentChar = lastCommand.getCharPos();
 			_commands.pop();
 			break;
 		}
