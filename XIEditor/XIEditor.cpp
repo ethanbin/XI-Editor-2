@@ -200,21 +200,20 @@ std::string XIEditor::modeInsert() {
 				break;
 			}
 			//this case takes care of special keys like delete and arrow keys
-			case 'à': {
+			case KeyCode::FUNC_KEY: {
 				//certain special keys read in 2 characters, not just one.
 				//these keys first read in à then another letter.
 				//this extra getch takes in the second part of the special key
-				char const arrowLeft = 'K', arrowRight = 'M', arrowUp = 'H', arrowDown = 'P', del = 'S';
 				char secChar = _getch();	
 				switch (secChar) {
-				case del: {
+				case KeyCode::FUNC_DELETE: {
 						if (_listBuffer.getEntry(_currentLine).length() > 0) {
 							std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
 						_listBuffer.replace(_currentLine, change);
 						break;
 						}
 					}
-					case arrowRight: {
+					case KeyCode::FUNC_ARROW_RIGHT: {
 						_currentChar++;
 						int currentLineLength = _listBuffer.getEntry(_currentLine).length();
 						//for going too far right
@@ -222,17 +221,17 @@ std::string XIEditor::modeInsert() {
 							_currentChar = currentLineLength+1;
 						break;
 					}
-					case arrowLeft: {
+					case KeyCode::FUNC_ARROW_LEFT: {
 						_currentChar--;
 						stayInText();
 						break;
 					}
-					case arrowUp: {
+					case KeyCode::FUNC_ARROW_UP: {
 						_currentLine--;
 						stayInText();
 						break;
 					}
-					case arrowDown: {
+					case KeyCode::FUNC_ARROW_DOWN: {
 						_currentLine++;
 						stayInText();
 						break;
@@ -241,7 +240,7 @@ std::string XIEditor::modeInsert() {
 				
 				break;
 			}
-			case '\b': {
+			case KeyCode::BACKSPACE: {
 				_currentChar--;
 				if (!stayInText()) {
 					std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
@@ -253,7 +252,7 @@ std::string XIEditor::modeInsert() {
 				}
 				break;
 			}
-			case '\r': {
+			case KeyCode::RETURN: {
 				//copy text to right of cursor
 				std::string temp = _listBuffer.getEntry(_currentLine).substr(_currentChar-1,
 					_listBuffer.getEntry(_currentLine).length() - _currentChar+1);
@@ -271,7 +270,7 @@ std::string XIEditor::modeInsert() {
 				break;
 			}
 			default: {
-				if (input[0] != '\b') {
+				if (input[0] != KeyCode::BACKSPACE) {
 					fullInput += input;
 					input = input[0];
 					std::string edited = _listBuffer.getEntry(_currentLine).insert((_currentChar++)-1, input);
