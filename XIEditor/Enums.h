@@ -23,7 +23,12 @@
 			BACKSPACE = '\b',
 			ENTER = '\r',
 			RETURN = '\r',
-			FUNC_KEY = 'à'
+			FUNC_KEY = 'à',
+			FUNC_ARROW_LEFT = 'K',
+			FUNC_ARROW_RIGHT = 'M',
+			FUNC_ARROW_UP = 'H',
+			FUNC_ARROW_DOWN = 'P',
+			FUNC_DELETE = 'S'
 		};
 	}
 	#endif
