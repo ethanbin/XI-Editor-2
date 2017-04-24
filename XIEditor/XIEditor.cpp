@@ -169,10 +169,12 @@ bool XIEditor::stayInText() {
 	return isCorrected;
 }
 
-std::string XIEditor::modeInsert() {
-	std::string input;
-	std::string fullInput = "";
+void XIEditor::modeInsert() {
+	std::string input = "";
+	std::string originalLine = _listBuffer.getEntry(_currentLine);;
+	int charPos = _currentChar;
 	bool notEsc = true;
+	bool isEdited = false;
 	while (notEsc) 
 	{
 		system("cls");
@@ -183,6 +185,11 @@ std::string XIEditor::modeInsert() {
 		{
 			case KeyCode::ESC: {
 				notEsc = false;
+				if (isEdited) {
+					_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+					originalLine = _listBuffer.getEntry(_currentLine);
+					isEdited = false;
+				}
 				break;
 			}
 			//this case takes care of special keys like delete and arrow keys
@@ -192,34 +199,60 @@ std::string XIEditor::modeInsert() {
 				//this extra getch takes in the second part of the special key
 				char secChar = _getch();	
 				switch (secChar) {
-				case KeyCode::FUNC_DELETE: {
+					case KeyCode::FUNC_DELETE: {
 						if (_listBuffer.getEntry(_currentLine).length() > 0) {
 							std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
 						_listBuffer.replace(_currentLine, change);
+						isEdited = true;
 						break;
 						}
 					}
 					case KeyCode::FUNC_ARROW_RIGHT: {
+						if (isEdited) {
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+							originalLine = _listBuffer.getEntry(_currentLine);
+							isEdited = false;
+						}
+
 						_currentChar++;
+						//not using stayInText because thatll stop cursor from writing at end of line
 						int currentLineLength = _listBuffer.getEntry(_currentLine).length();
-						//for going too far right
 						if (_currentChar > currentLineLength + 1)
 							_currentChar = currentLineLength+1;
+						charPos = _currentChar;
 						break;
 					}
 					case KeyCode::FUNC_ARROW_LEFT: {
+						if (isEdited){
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+							originalLine = _listBuffer.getEntry(_currentLine);
+							isEdited = false;
+						}
 						_currentChar--;
 						stayInText();
+						charPos = _currentChar;
 						break;
 					}
 					case KeyCode::FUNC_ARROW_UP: {
+						if (isEdited) {
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+							originalLine = _listBuffer.getEntry(_currentLine);
+							isEdited = false;
+						}
 						_currentLine--;
 						stayInText();
+						charPos = _currentChar;
 						break;
 					}
 					case KeyCode::FUNC_ARROW_DOWN: {
+						if (isEdited) {
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+							originalLine = _listBuffer.getEntry(_currentLine);
+							isEdited = false;
+						}
 						_currentLine++;
 						stayInText();
+						charPos = _currentChar;
 						break;
 					}
 				}
@@ -236,8 +269,10 @@ std::string XIEditor::modeInsert() {
 					std::string change = _listBuffer.getEntry(_currentLine).erase(0, 1);
 					_listBuffer.replace(_currentLine, change); 
 				}
+				//_currentChar++;
+				isEdited = true;
 				break;
-			}
+			}/*
 			case KeyCode::RETURN: {
 				//copy text to right of cursor
 				std::string temp = _listBuffer.getEntry(_currentLine).substr(_currentChar-1,
@@ -252,19 +287,20 @@ std::string XIEditor::modeInsert() {
 				insertLine(temp, ++_currentLine);
 				_currentChar = 1;
 				break;
-			}
+			}*/
 			default: {
-				if (input[0] != KeyCode::BACKSPACE) {
-					fullInput += input;
+				if (input[0]) {
+					if (originalLine == "")
+						originalLine = _listBuffer.getEntry(_currentLine);
 					input = input[0];
 					std::string edited = _listBuffer.getEntry(_currentLine).insert((_currentChar++)-1, input);
 					_listBuffer.replace(_currentLine, edited);
+					isEdited = true;
 				}
 				break;
 			}
 		}
 	}
-	return fullInput;
 }
 
 bool XIEditor::modeLastLine() {
@@ -373,16 +409,18 @@ void XIEditor::modeCommand() {
 				break;
 			}
 			case KeyCode::INSERT_HERE: {
-				std::string insertedText = modeInsert();
+				//std::string insertedText = 
+				modeInsert();
 				int startingLocation = _currentChar;
-				_commands.push(CommandPlus(KeyCode::INSERT_HERE, insertedText, startingLocation));
+				//_commands.push(CommandPlus(KeyCode::INSERT_HERE, insertedText, startingLocation));
 				break;
 			}
 			case KeyCode::INSERT_START: {
 				_currentChar = 0;
 				int startingLocation = _currentChar;
-				std::string insertedText = modeInsert();
-				_commands.push(CommandPlus(KeyCode::INSERT_START, insertedText, startingLocation));
+				//std::string insertedText = 
+				modeInsert();
+				//_commands.push(CommandPlus(KeyCode::INSERT_START, insertedText, startingLocation));
 				break;
 			}
 			case KeyCode::LAST_LINE:
@@ -437,6 +475,13 @@ bool XIEditor::undo() {
 		}
 		case KeyCode::DEL_LINE: {
 			insertLine(_commands.peek().getChange(), _currentLine);
+			_commands.pop();
+			break;
+		}
+		case KeyCode::INSERT_HERE: {
+			_listBuffer.replace(_currentLine, _commands.peek().getChange());
+
+			_currentChar = _commands.peek().getCharPos();
 			_commands.pop();
 			break;
 		}

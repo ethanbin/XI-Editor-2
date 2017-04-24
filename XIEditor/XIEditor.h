@@ -50,7 +50,7 @@ class XIEditor {
 		//enters insert mode. 
 		//Here, a user can insert text or delete text (with backspace or delete)
 		//returns a string so the stack can know what to undo
-		std::string modeInsert();
+		void modeInsert();
 
 		//enters last line mode.
 		//can execute powerful commands, such as write (save), quit, etc.
