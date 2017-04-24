@@ -1,0 +1,26 @@
+Command Mode:
+	Navigation: 
+		up:				k
+		down:			j
+		right:			l
+		left:			h
+
+	Delete a character:				x
+
+	Undo:							u
+
+	Enter Insert mode:
+		At cursor:					i
+		At the start of the line:	I
+
+	Insert newline & enter Insert mode:
+		Below the cursor:			o
+		Above the cursor:			O
+
+	Exit Insert mode:				ESC
+
+	Enter Last Line mode:			:
+	Last Line mode commands:
+		quit:						q
+		write (save):				w
+		write (save) and quit:		wq

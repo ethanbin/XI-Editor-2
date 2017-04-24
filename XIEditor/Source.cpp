@@ -3,22 +3,16 @@
 #include <string>
 #include "XIEditor.h"
 
+using std::cout;
+using std::endl;
+
 void main(int argc, char *argv[]) {
-	XIEditor editor(argv[1]);
-
-	std::string startMsg = std::string("\t\t\t\t-- XI-Editor --\n") + 
-		"Esc to quit, " +
-		"K to move up, " +
-		"J to move down, " +
-		"L to move right, " +
-		"H to move left.\n\n\n";
-
-	while (true)
-	{
+	if (argc >= 2) {
+		XIEditor editor(argv[1]);
 		system("cls");
-		std::cout << startMsg;
 
-		editor.printLines();
-		editor.userInput();
+		editor.start();
 	}
+	else
+		cout << "Error: No file specified." << endl;
 }

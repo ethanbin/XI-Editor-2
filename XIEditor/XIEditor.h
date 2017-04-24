@@ -1,9 +1,12 @@
-#pragma once
+#include "StackInterface.h"
+#include "LinkedList.h"
+#include "LinkedStack.h"
+#include "Command.h"
 #include <fstream>
 #include <string>
 
 class XIEditor {
-	public:
+	public: //functions
 
 		/*constructor opens file fileName, counts lines, 
 		makes dynamic array from arrayBuffer,
@@ -12,40 +15,59 @@ class XIEditor {
 
 		~XIEditor();
 
+		void start();
+
+	private: //functions
+
 		//returns string with file's text with a star and carrot as a cursor
 		void printLines();
 
-		/*accepts char and compares it to KeyCode, 
-		moves index and/or carrot depending on input,
-		ensures cursor does not go beyond the text*/
-		void userInput();
+		//move right. if going right goes past text, go to beginning of next line.
+		void goRight();
 
-	private: //functions to be used by public member functions only
+		//move left. if going left goes past text, go to end of previous line.
+		void goLeft();
 
 		//resizes an array to a given size
-		//if the given size is smaller than the current array buffer,  
-		void resize(int);
+		//if the given size is smaller than the current capacity, then addresses beyond resizeTo are lost.
+		//after resizing, usedLines is set to however many items were copied back into the array buffer.
+		//bool resize(int);
 
-		//deletes a line at the given location
-		void deleteLine(int);
+		//deletes the node for a line at the given location.
+		//when deleting the last remaining line/node, 
+		//	the string of the node is replaced with an empty string.
+		//returns true if line to delete is greater than 1.
+		bool deleteLine(int);
+		
+		//inserts a new line on indicated line.
+		//whatever was on this line is pushed to the next line.
+		void insertLine(std::string, int);
 
-		//prevents the carrot from going too far right
-		void stayInText();
+		//prevents the carrot from going too far right.
+		//returns true if the function corrected the cursor position.
+		bool stayInText();
 
-		//for comparing input with in userInput()
-		//commands using 2 different keys will be named with a 1 and 2, 1 being required first.
-		enum KeyCode {
-			UP = 'k',
-			DOWN = 'j',
-			RIGHT = 'l',
-			LEFT = 'h',
-			DEL_CHAR = 'x',
-			DEL_LINE = 'd',
-			ESC_1 = ';',
-			ESC_2 = 'q'
-		};
+		//enters insert mode. 
+		//Here, a user can insert text or delete text (with backspace or delete)
+		//returns a string so the stack can know what to undo
+		std::string modeInsert();
 
-	private:
-		std::string *_arrayBuffer;
-		int _capacity, _currentLine=0, _currentChar=0;
+		//enters last line mode.
+		//can execute powerful commands, such as write (save), quit, etc.
+		//returns false if quit command used
+		bool modeLastLine();
+
+		/*accepts char and compares it to KeyCode,
+		moves index and/or carrot depending on input,
+		ensures cursor does not go beyond the text*/
+		void modeCommand();
+
+		//undo last command commited by user. commands are tracked by stack
+		bool undo();
+
+	private: //variables
+		std::string _fileName;
+		LinkedStack<CommandPlus> _commands;
+		LinkedList<std::string> _listBuffer;
+		int _capacity, _usedLines, _currentLine=1, _currentChar=1;
 };
