@@ -34,11 +34,6 @@ XIEditor::XIEditor(std::string fileName) {
 	userFile.clear();
 	userFile.seekg(0);
 	
-	//_arrayBuffer = new std::string[_capacity];
-
-//	for (int i = 0; !userFile.eof(); i++)
-//		_listBuffer.insert(userFile.getline());//getline(userFile, _arrayBuffer[i]);
-	
 	_currentLine = 1;
 	_currentChar = 1;
 	_usedLines = _capacity;
@@ -105,29 +100,6 @@ void XIEditor::goLeft() {
 		}
 }
 
-/*
-bool XIEditor::resize(int resizeTo) {
-	if (resizeTo<0)
-		return false;
-	std::string *temp = new std::string[_capacity];
-	
-	int itemsCopied = 0;
-	for (int i = 0; i < _capacity && i < resizeTo && i < _usedLines; i++) {
-		temp[i] = _arrayBuffer[i];
-		itemsCopied++;
-	}
-
-	_arrayBuffer = new std::string[resizeTo];
-
-	for (int i = 0; i < itemsCopied; i++)
-		_arrayBuffer[i] = temp[i];
-	
-	_capacity = resizeTo;
-	_usedLines = itemsCopied;
-	return true;
-}
-*/
-
 bool XIEditor::deleteLine(int deleteHere) {
 	if (deleteHere < 1)
 		return false;
@@ -144,14 +116,6 @@ bool XIEditor::deleteLine(int deleteHere) {
 }
 
 void XIEditor::insertLine(std::string line, int insertHere) {
-	/*
-	if (_usedLines == _capacity)
-		resize(_capacity+1);
-
-	for (int i = _usedLines - 1; i > insertHere; i--)
-		_arrayBuffer[i] = _arrayBuffer[i - 1];
-	_arrayBuffer[insertHere] = line;
-	*/
 	_usedLines++;
 	_listBuffer.insert(insertHere, line);
 }
@@ -265,8 +229,6 @@ std::string XIEditor::modeInsert() {
 				
 				insertLine(temp, ++_currentLine);
 				_currentChar = 1;
-				//stayInText();
-				//_arrayBuffer[_currentLine].insert(_currentChar, temp);
 				break;
 			}
 			default: {
@@ -329,8 +291,7 @@ void XIEditor::modeCommand() {
 			{
 				_currentLine--;
 				if (_currentLine != 0)
-					//if (!stayInText())
-						_commands.push(CommandPlus(KeyCode::UP, _currentChar));
+					_commands.push(CommandPlus(KeyCode::UP, _currentChar));
 				break;
 			}
 			//move down
@@ -338,8 +299,7 @@ void XIEditor::modeCommand() {
 			{
 				_currentLine++;
 				if (_currentLine != _usedLines + 1)
-					//if (!stayInText())
-						_commands.push(CommandPlus(KeyCode::DOWN, _currentChar));
+					_commands.push(CommandPlus(KeyCode::DOWN, _currentChar));
 				break;
 			}
 
@@ -348,7 +308,7 @@ void XIEditor::modeCommand() {
 			{
 				goRight();
 				if (!stayInText())
-				_commands.push(CommandPlus(KeyCode::RIGHT));
+					_commands.push(CommandPlus(KeyCode::RIGHT));
 				break;
 			}
 			//move left
@@ -356,7 +316,7 @@ void XIEditor::modeCommand() {
 			{
 				goLeft();
 				if (!stayInText())
-				_commands.push(CommandPlus(KeyCode::LEFT));
+					_commands.push(CommandPlus(KeyCode::LEFT));
 				break;
 			}
 			case KeyCode::DEL_CHAR:

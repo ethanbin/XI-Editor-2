@@ -9,8 +9,7 @@ class XIEditor {
 	public: //functions
 
 		/*constructor opens file fileName, counts lines, 
-		makes dynamic array from arrayBuffer,
-		then reads in each line to arrayBuffer.*/
+		and reads in each line to list Buffer.*/
 		XIEditor(std::string);
 
 		~XIEditor();
@@ -27,11 +26,6 @@ class XIEditor {
 
 		//move left. if going left goes past text, go to end of previous line.
 		void goLeft();
-
-		//resizes an array to a given size
-		//if the given size is smaller than the current capacity, then addresses beyond resizeTo are lost.
-		//after resizing, usedLines is set to however many items were copied back into the array buffer.
-		//bool resize(int);
 
 		//deletes the node for a line at the given location.
 		//when deleting the last remaining line/node, 
