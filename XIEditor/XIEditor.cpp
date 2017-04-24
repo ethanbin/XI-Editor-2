@@ -46,6 +46,28 @@ void XIEditor::start() {
 	modeCommand();
 }
 
+bool XIEditor::save() {
+	ofstream txtFile;
+	txtFile.open(_fileName);
+	if (!txtFile.is_open())
+		return false;
+	for (int i = 1; i <= _listBuffer.getLength(); i++)
+		txtFile << _listBuffer.getEntry(i) << endl;
+	txtFile.close();
+	return true;
+}
+
+bool XIEditor::save(std::string fileName) {
+	ofstream txtFile;
+	txtFile.open(fileName);
+	if (!txtFile.is_open())
+		return false;
+	for (int i = 1; i <= _listBuffer.getLength(); i++)
+		txtFile << _listBuffer.getEntry(i) << endl;
+	txtFile.close();
+	return true;
+}
+
 //This method prints all visible content
 void XIEditor::printLines()
 {
@@ -254,22 +276,10 @@ bool XIEditor::modeLastLine() {
 	if (input == quit)
 		return false;
 	if (input == write){
-		ofstream txtFile;
-		txtFile.open(_fileName);
-		for (int i = 1; i <= _listBuffer.getLength(); i++)
-			txtFile << _listBuffer.getEntry(i) << endl;
-		txtFile.close();
+		save();
 	}
 	if (input == writeQuit) {
-		ofstream txtFile;
-		txtFile.open(_fileName);
-
-		//print to file and prevent extra endline at end of file
-		for (int i = 1; i < _usedLines; i++)
-			txtFile << _listBuffer.getEntry(i) << endl;
-		txtFile << _listBuffer.getEntry(_usedLines);
-
-		txtFile.close();
+		save();
 		return false;
 	}
 }

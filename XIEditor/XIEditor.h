@@ -17,6 +17,12 @@ class XIEditor {
 		void start();
 
 	private: //functions
+		//overwrites file given when creating this instance of XIEditor with
+		//what is currently displayed.
+		bool save();
+
+		//overwrites given file/path with  what is currently displayed.
+		bool save(std::string);
 
 		//returns string with file's text with a star and carrot as a cursor
 		void printLines();
