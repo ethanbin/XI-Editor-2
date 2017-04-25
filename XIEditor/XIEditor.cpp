@@ -262,7 +262,7 @@ void XIEditor::modeInsert() {
 			case KeyCode::BACKSPACE: {
 				_currentChar--;
 				if (!stayInText()) {
-					std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
+					std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar-1, 1);
 					_listBuffer.replace(_currentLine, change);
 				}
 				else if (_currentChar == 1){
