@@ -181,7 +181,7 @@ void XIEditor::modeInsert() {
 				switch (secChar) {
 					case KeyCode::FUNC_DELETE: {
 						if (_listBuffer.getEntry(_currentLine).length() > 0) {
-							std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar, 1);
+							std::string change = _listBuffer.getEntry(_currentLine).erase(_currentChar-1, 1);
 						_listBuffer.replace(_currentLine, change);
 						isEdited = true;
 						break;
