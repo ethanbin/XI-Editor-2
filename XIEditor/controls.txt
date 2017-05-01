@@ -1,26 +1,31 @@
 Command Mode:
-	Navigation: 
+	Navigate Text: 
 		up:				k
 		down:			j
 		right:			l
 		left:			h
 
-	Delete a character:				x
+	Delete character:	x
 
-	Undo:							u
+	Undo:				u
+-------------------------------------------------
 
-	Enter Insert mode:
-		At cursor:					i
-		At the start of the line:	I
+Insert Mode:
+	Enter mode at cursor:				i
+
+	Enter mode at the start of line:	I
 
 	Insert newline & enter Insert mode:
-		Below the cursor:			o
-		Above the cursor:			O
+		Below the cursor:				o
+		Above the cursor:				O
 
-	Exit Insert mode:				ESC
+	Navigate Text:						Arrow Keys
 
-	Enter Last Line mode:			:
-	Last Line mode commands:
+	Exit Insert mode:					ESC Key
+-------------------------------------------------
+
+Last Line Mode:
+	Enter mode:						:
 		quit:						q
 		write (save):				w
 		write (save) and quit:		wq
