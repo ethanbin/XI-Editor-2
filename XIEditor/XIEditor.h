@@ -1,5 +1,5 @@
 #ifndef  XIEDITOR_
-#define  XIEDITOR
+#define  XIEDITOR_
 
 #include "StackInterface.h"
 #include "LinkedList.h"
@@ -7,6 +7,7 @@
 #include "Command.h"
 #include <fstream>
 #include <string>
+#include "OSFunctions.h"
 
 class XIEditor {
 	public: //functions

@@ -1,7 +1,8 @@
-#ifndef OSFUNC_
-#define OSFUNC_
+#ifndef OSFUNCS
+#define OSFUNCS
 
-#pragma once
+
+
 //Windows 32-bit and 64-bit
 #ifdef _WIN32
 	#include <Windows.h>
@@ -30,7 +31,7 @@
 #include "TargetConditionals.h"
 	//mac OS
 	#if TARGET_OS_MAC
-	void clrscrns() {}
+	void clrscrn() {}
 
 	void consoleBlackOnWhite() {}
 
@@ -63,4 +64,6 @@
 	//takes int x and y for coordinates to move cursor to.
 	void cursor(int x, int y) {}
 #endif
-#endif
+
+
+#endif //!OSFUNCS
