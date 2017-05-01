@@ -1,3 +1,6 @@
+#ifndef ENUMS_
+#define ENUMS_
+
 //Windows 32-bit and 64-bit
 #ifdef _WIN32
 	#ifndef ENUMS
@@ -110,4 +113,5 @@
 		};
 	}
 	#endif
+#endif
 #endif
