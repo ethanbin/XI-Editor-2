@@ -15,4 +15,5 @@ void main(int argc, char *argv[]) {
 	}
 	else
 		cout << "Error: No file specified." << endl;
+	system("cls");
 }
