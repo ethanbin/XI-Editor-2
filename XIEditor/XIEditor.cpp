@@ -18,7 +18,7 @@ XIEditor::XIEditor(std::string fileName) {
 	userFile.open(fileName);
 
 	if (!userFile.is_open()) {
-		cout << "ERROR: No File Found." << endl;
+		cout << "Error: No File Found." << endl;
 		userFile.close();
 		exit(EXIT_FAILURE);
 	}
