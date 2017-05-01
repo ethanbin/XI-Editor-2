@@ -1,9 +1,10 @@
 #include "XIEditor.h"
 #include "Enums.h"
 #include <iostream>
-#include<string>
+#include <string>
 #include <fstream>
 #include <conio.h>
+#include "OSFunctions.h"
 
 using std::cout;
 using std::cin;
@@ -71,6 +72,7 @@ bool XIEditor::save(std::string fileName) {
 //This method prints all visible content
 void XIEditor::printLines()
 {
+	clrscrn();
 	for (int i = 1; i < _usedLines+1; i++)
 	{
 		//This makes _currentLine relative to '*'
@@ -177,7 +179,6 @@ void XIEditor::modeInsert() {
 	bool isEdited = false;
 	while (notEsc) 
 	{
-		system("cls");
 		printLines();
 		input = _getch();
 		
@@ -326,7 +327,6 @@ void XIEditor::modeCommand() {
 	bool notEsc = true;
 	while (notEsc)
 	{
-		system("cls");
 		printLines();
 		userInput = _getch();
 

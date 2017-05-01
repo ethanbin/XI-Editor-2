@@ -2,11 +2,13 @@
 #include <iostream>
 #include <string>
 #include "XIEditor.h"
+#include "OSFunctions.h"
 
 using std::cout;
 using std::endl;
 
 void main(int argc, char *argv[]) {
+	consoleBlackOnWhite();
 	if (argc >= 2) {
 		XIEditor editor(argv[1]);
 		system("cls");
@@ -15,5 +17,7 @@ void main(int argc, char *argv[]) {
 	}
 	else
 		cout << "Error: No file specified." << endl;
-	system("cls");
+	
+	consoleWhiteOnBlack();
+	clrscrn();
 }
