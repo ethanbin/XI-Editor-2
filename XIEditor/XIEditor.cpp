@@ -269,7 +269,7 @@ void XIEditor::modeInsert() {
 				break;
 			}*/
 			default: {
-				if (input[0]) {
+				if (input[0] != KeyCode::RETURN) {
 					if (originalLine == "")
 						originalLine = _listBuffer.getEntry(_currentLine);
 					input = input[0];
