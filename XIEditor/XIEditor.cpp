@@ -73,28 +73,8 @@ void XIEditor::printLines()
 {
 	clrscrn();
 	for (int i = 1; i < _usedLines+1; i++)
-	{
-		//This makes _currentLine relative to '*'
-		if (i == _currentLine)
-		{
-			cout << '*';
-			cout << _listBuffer.getEntry(i) << endl;
-			//This makes current position relative to '^'
-			for (int j = 0; j < _currentChar; j++)
-			{
-				cout << ' ';
-			}
-			cout << '^' << endl;
-		}
-		else
-		{
-			cout << ' ';
-			cout << _listBuffer.getEntry(i) << endl;
-		}
-	}
-	//when there is nothing to print
-	if (_usedLines == 0)
-		cout << "*" << endl << " ^";
+		cout << _listBuffer.getEntry(i) << endl;
+	moveCursorTo(_currentChar - 1, _currentLine - 1);
 }
 
 void XIEditor::goRight() {
@@ -305,6 +285,7 @@ void XIEditor::modeInsert() {
 
 bool XIEditor::modeLastLine() {
 	std::string quit = "q", write = "w", writeQuit = "wq";
+	moveCursorTo(0, _usedLines);
 	cout << "\n\n\n";
 	cout << ":";
 	std::string input;
