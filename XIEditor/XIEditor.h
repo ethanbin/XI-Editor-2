@@ -1,3 +1,6 @@
+#ifndef  XIEDITOR_
+#define  XIEDITOR
+
 #include "StackInterface.h"
 #include "LinkedList.h"
 #include "LinkedStack.h"
@@ -71,3 +74,4 @@ class XIEditor {
 		LinkedList<std::string> _listBuffer;
 		int _capacity, _usedLines, _currentLine=1, _currentChar=1;
 };
+#endif
