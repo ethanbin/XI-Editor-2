@@ -157,6 +157,7 @@
     <ClInclude Include="LinkedStack.h" />
     <ClInclude Include="ListInterface.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="OSFunctions.h" />
     <ClInclude Include="StackInterface.h" />
     <ClInclude Include="XIEditor.h" />
   </ItemGroup>
