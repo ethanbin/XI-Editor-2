@@ -1,8 +1,6 @@
 #ifndef OSFUNCS
 #define OSFUNCS
 
-
-
 //Windows 32-bit and 64-bit
 #ifdef _WIN32
 	#include <Windows.h>
