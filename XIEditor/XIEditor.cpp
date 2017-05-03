@@ -51,8 +51,9 @@ bool XIEditor::save() {
 	txtFile.open(_fileName);
 	if (!txtFile.is_open())
 		return false;
-	for (int i = 1; i <= _listBuffer.getLength(); i++)
+	for (int i = 1; i <= _listBuffer.getLength()-1; i++)
 		txtFile << _listBuffer.getEntry(i) << endl;
+	txtFile << _listBuffer.getEntry(_listBuffer.getLength());
 	txtFile.close();
 	return true;
 }
@@ -291,8 +292,13 @@ bool XIEditor::modeLastLine() {
 	cin >> input;
 	if (input == quit)
 		return false;
-	if (input == write){
+	else if (input == write){
 		save();
+		//return true;
+	}
+	else if (input == writeQuit) {
+		save();
+		return false;
 	}
 }
 
