@@ -72,6 +72,7 @@ throw(PrecondViolatedExcept)
 	{
 		std::string message = "getEntry() called with an empty list or ";
 		message = message + "invalid position.";
+		//editted out because it crashed program.
 		//throw(PrecondViolatedExcept(message));
 	} // end if
 } // end getEntry
