@@ -34,6 +34,13 @@ CommandPlus::CommandPlus(KeyCode::KeyCode action, std::string change, int charPo
 	_charPos = charPos;
 }
 
+CommandPlus::CommandPlus(KeyCode::KeyCode action, std::string change, int charPos, int linePos) {
+	_action = action;
+	_change = change;
+	_charPos = charPos;
+	_linePos = linePos;
+}
+
 KeyCode::KeyCode CommandPlus::getAction() {
 	return _action;
 }
@@ -60,4 +67,14 @@ int CommandPlus::getCharPos()
 void CommandPlus::setCharPos(int charPos)
 {
 	_charPos = charPos;
+}
+
+int CommandPlus::getLinePos()
+{
+	return _linePos;
+}
+
+void CommandPlus::setLinePos(int linePos)
+{
+	_linePos = linePos;
 }

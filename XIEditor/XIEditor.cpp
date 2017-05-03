@@ -152,7 +152,7 @@ bool XIEditor::stayInText() {
 
 void XIEditor::modeInsert() {
 	std::string input = "";
-	std::string originalLine = _listBuffer.getEntry(_currentLine);;
+	std::string originalLine = _listBuffer.getEntry(_currentLine);
 	int charPos = _currentChar;
 	bool notEsc = true;
 	bool isEdited = false;
@@ -166,7 +166,7 @@ void XIEditor::modeInsert() {
 			case KeyCode::ESC: {
 				notEsc = false;
 				if (isEdited) {
-					_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+					_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos, _currentLine));
 					originalLine = _listBuffer.getEntry(_currentLine);
 					isEdited = false;
 				}
@@ -189,7 +189,7 @@ void XIEditor::modeInsert() {
 					}
 					case KeyCode::FUNC_ARROW_RIGHT: {
 						if (isEdited) {
-							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos, _currentLine));
 							originalLine = _listBuffer.getEntry(_currentLine);
 							isEdited = false;
 						}
@@ -204,7 +204,7 @@ void XIEditor::modeInsert() {
 					}
 					case KeyCode::FUNC_ARROW_LEFT: {
 						if (isEdited){
-							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos, _currentLine));
 							originalLine = _listBuffer.getEntry(_currentLine);
 							isEdited = false;
 						}
@@ -215,23 +215,24 @@ void XIEditor::modeInsert() {
 					}
 					case KeyCode::FUNC_ARROW_UP: {
 						if (isEdited) {
-							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
-							originalLine = _listBuffer.getEntry(_currentLine);
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos, _currentLine));
+							originalLine = _listBuffer.getEntry(_currentLine);//to record correct line
 							isEdited = false;
 						}
 						_currentLine--;
 						stayInText();
+						originalLine = _listBuffer.getEntry(_currentLine);
 						charPos = _currentChar;
 						break;
 					}
 					case KeyCode::FUNC_ARROW_DOWN: {
 						if (isEdited) {
-							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos));
-							originalLine = _listBuffer.getEntry(_currentLine);
+							_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos, _currentLine));
 							isEdited = false;
 						}
 						_currentLine++;
 						stayInText();
+						originalLine = _listBuffer.getEntry(_currentLine);
 						charPos = _currentChar;
 						break;
 					}
@@ -270,8 +271,6 @@ void XIEditor::modeInsert() {
 			}*/
 			default: {
 				if (input[0] != KeyCode::RETURN) {
-					if (originalLine == "")
-						originalLine = _listBuffer.getEntry(_currentLine);
 					input = input[0];
 					std::string edited = _listBuffer.getEntry(_currentLine).insert((_currentChar++)-1, input);
 					_listBuffer.replace(_currentLine, edited);
@@ -294,10 +293,6 @@ bool XIEditor::modeLastLine() {
 		return false;
 	if (input == write){
 		save();
-	}
-	if (input == writeQuit) {
-		save();
-		return false;
 	}
 }
 
@@ -373,6 +368,12 @@ void XIEditor::modeCommand() {
 			}
 			case KeyCode::UNDO: {
 				undo();
+				break;
+			}/**/
+			case KeyCode::UNDO_ALL: {
+				int lineToUndo = _currentLine;
+				while(_currentLine == lineToUndo)
+					undo();
 				break;
 			}
 			case KeyCode::INSERT_ABOVE: {
@@ -450,20 +451,21 @@ bool XIEditor::undo() {
 		}
 		case KeyCode::DEL_CHAR: {
 			std::string edited = _listBuffer.getEntry(_currentLine).insert(_currentChar-1,
-															_commands.peek().getChange());
+															lastCommand.getChange());
 			_listBuffer.replace(_currentLine, edited);
 			_commands.pop();
 			break;
 		}
 		case KeyCode::DEL_LINE: {
-			insertLine(_commands.peek().getChange(), _currentLine);
+			insertLine(lastCommand.getChange(), _currentLine);
 			_commands.pop();
 			break;
 		}
 		case KeyCode::INSERT_HERE: {
-			_listBuffer.replace(_currentLine, _commands.peek().getChange());
+			_currentLine = lastCommand.getLinePos();
+			_listBuffer.replace(_currentLine, lastCommand.getChange());
 
-			_currentChar = _commands.peek().getCharPos();
+			_currentChar = lastCommand.getCharPos();
 			_commands.pop();
 			break;
 		}

@@ -16,6 +16,7 @@
 			DEL_CHAR = 'x',
 			DEL_LINE = 'd',
 			UNDO = 'u',
+			UNDO_ALL = 'U',
 			INSERT_BELOW = 'o',
 			INSERT_ABOVE = 'O',
 			INSERT_HERE = 'i',
