@@ -53,8 +53,9 @@ class XIEditor {
 
 		//enters insert mode. 
 		//Here, a user can insert text or delete text (with backspace or delete)
+		//takes int originalCharPos
 		//returns a string so the stack can know what to undo
-		void modeInsert();
+		void modeInsert(int);
 
 		//enters last line mode.
 		//can execute powerful commands, such as write (save), quit, etc.
