@@ -151,10 +151,10 @@ bool XIEditor::stayInText() {
 	return isCorrected;
 }
 
-void XIEditor::modeInsert() {
+void XIEditor::modeInsert(int originalCharPos) {
 	std::string input = "";
 	std::string originalLine = _listBuffer.getEntry(_currentLine);
-	int charPos = _currentChar;
+	int charPos = originalCharPos;
 	bool notEsc = true;
 	bool isEdited = false;
 	while (notEsc) 
@@ -222,6 +222,9 @@ void XIEditor::modeInsert() {
 						}
 						_currentLine--;
 						stayInText();
+						//this is ok to have out of above if statement because 
+						//moving up or down will change what originalLine should be regardless of 
+						//whether or not anything was editted
 						originalLine = _listBuffer.getEntry(_currentLine);
 						charPos = _currentChar;
 						break;
@@ -233,6 +236,9 @@ void XIEditor::modeInsert() {
 						}
 						_currentLine++;
 						stayInText();
+						//this is ok to have out of above if statement because 
+						//moving up or down will change what originalLine should be regardless of 
+						//whether or not anything was editted
 						originalLine = _listBuffer.getEntry(_currentLine);
 						charPos = _currentChar;
 						break;
@@ -283,6 +289,7 @@ void XIEditor::modeInsert() {
 	}
 }
 
+//returns false if quit command was used.
 bool XIEditor::modeLastLine() {
 	std::string quit = "q", write = "w", writeQuit = "wq";
 	moveCursorTo(0, _usedLines);
@@ -290,11 +297,14 @@ bool XIEditor::modeLastLine() {
 	cout << ":";
 	std::string input;
 	cin >> input;
+	//clear buffer to prevent bugs 
+	//(ex: ":d q" wont do anything, but ":" would then immediately quit program)
+	cin.clear();
 	if (input == quit)
 		return false;
 	else if (input == write){
 		save();
-		//return true;
+		return true;
 	}
 	else if (input == writeQuit) {
 		save();
@@ -387,29 +397,25 @@ void XIEditor::modeCommand() {
 				_currentChar = 0; //set cursor to beginning of the line
 				insertLine("", _currentLine);
 				_currentChar = 1;
-				modeInsert();
+				modeInsert(_currentChar);
 				break;
 			}
 			case KeyCode::INSERT_BELOW: {
 				_commands.push(CommandPlus(KeyCode::INSERT_BELOW, _currentChar));
 				insertLine("", ++_currentLine);
 				_currentChar = 1;
-				modeInsert();
+				modeInsert(_currentChar);
 				break;
 			}
 			case KeyCode::INSERT_HERE: {
-				//std::string insertedText = 
-				modeInsert();
+				modeInsert(_currentChar);
 				int startingLocation = _currentChar;
-				//_commands.push(CommandPlus(KeyCode::INSERT_HERE, insertedText, startingLocation));
 				break;
 			}
 			case KeyCode::INSERT_START: {
-				_currentChar = 0;
-				int startingLocation = _currentChar;
-				//std::string insertedText = 
-				modeInsert();
-				//_commands.push(CommandPlus(KeyCode::INSERT_START, insertedText, startingLocation));
+				int originalCharPos = _currentChar;
+				_currentChar = 1;
+				modeInsert(originalCharPos);
 				break;
 			}
 			case KeyCode::LAST_LINE:
