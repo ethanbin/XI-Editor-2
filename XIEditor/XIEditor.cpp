@@ -12,7 +12,7 @@ using std::ifstream;
 using std::ofstream;
 
 XIEditor::XIEditor(std::string fileName) {
-	_capacity = 0;
+	_size = 0;
 	_fileName = fileName;
 	ifstream userFile;
 	userFile.open(fileName);
@@ -24,11 +24,11 @@ XIEditor::XIEditor(std::string fileName) {
 	}
 
 	std::string lineCollector;
-	for (; !userFile.eof(); _capacity++) {
+	for (; !userFile.eof(); _size++) {
 		getline(userFile, lineCollector);
 		//capacity+1 when inserting because LinkedList 
 			//starts with position 1, unlike an array
-		_listBuffer.insert(_capacity +1, lineCollector);
+		_listBuffer.insert(_size +1, lineCollector);
 	}
 
 	userFile.clear();
@@ -72,7 +72,7 @@ bool XIEditor::save(std::string fileName) {
 void XIEditor::printLines()
 {
 	clrscrn();
-	for (int i = 1; i < _capacity+1; i++)
+	for (int i = 1; i < _size+1; i++)
 		cout << _listBuffer.getEntry(i) << endl;
 	moveCursorTo(_currentChar - 1, _currentLine - 1);
 }
@@ -80,7 +80,7 @@ void XIEditor::printLines()
 void XIEditor::goRight() {
 	_currentChar++;
 	//if not at last line
-	if (_currentLine < _capacity)
+	if (_currentLine < _size)
 		//move cursor to start of next line when going too far right
 		if (_currentChar > _listBuffer.getEntry(_currentLine).length()) {
 			_currentChar = 1;
@@ -107,19 +107,19 @@ bool XIEditor::deleteLine(int deleteHere) {
 	if (deleteHere < 1)
 		return false;
 
-	if (_capacity > 1) {
+	if (_size > 1) {
 		_listBuffer.remove(deleteHere);
-		_capacity--;
+		_size--;
 	}
-	else if (_capacity == 1) {
+	else if (_size == 1) {
 		_listBuffer.replace(deleteHere, "");
-		_capacity = 1;
+		_size = 1;
 	}
 	return true;
 }
 
 void XIEditor::insertLine(std::string line, int insertHere) {
-	_capacity++;
+	_size++;
 	_listBuffer.insert(insertHere, line);
 }
 
@@ -131,9 +131,9 @@ bool XIEditor::stayInText() {
 		isCorrected = true;
 	}
 	//for going too far down
-	if (_currentLine > _capacity) {
-		if (_capacity != 0)
-			_currentLine = _capacity;
+	if (_currentLine > _size) {
+		if (_size != 0)
+			_currentLine = _size;
 		isCorrected = true;
 	}
 	int currentLineLength = _listBuffer.getEntry(_currentLine).length();
@@ -291,7 +291,7 @@ void XIEditor::modeInsert(int originalCharPos) {
 //returns false if quit command was used.
 bool XIEditor::modeLastLine() {
 	std::string quit = "q", write = "w", writeQuit = "wq";
-	moveCursorTo(0, _capacity);
+	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
 	std::string input;
@@ -334,7 +334,7 @@ void XIEditor::modeCommand() {
 			case KeyCode::DOWN:
 			{
 				_currentLine++;
-				if (_currentLine != _capacity + 1)
+				if (_currentLine != _size + 1)
 					_commands.push(CommandPlus(KeyCode::DOWN, _currentChar));
 				break;
 			}
@@ -375,7 +375,7 @@ void XIEditor::modeCommand() {
 			}
 			case KeyCode::DEL_LINE: {
 				//push to stack the command and the line being deleted
-				if (_getch() == KeyCode::DEL_LINE && _capacity >= 0) {
+				if (_getch() == KeyCode::DEL_LINE && _size >= 0) {
 					_commands.push(CommandPlus(KeyCode::DEL_LINE, _listBuffer.getEntry(_currentLine)));
 					deleteLine(_currentLine);
 				}

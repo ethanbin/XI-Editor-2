@@ -74,6 +74,6 @@ class XIEditor {
 		std::string _fileName;
 		LinkedStack<CommandPlus> _commands;
 		LinkedList<std::string> _listBuffer;
-		int _capacity, _currentLine=1, _currentChar=1;
+		int _size, _currentLine=1, _currentChar=1;
 };
 #endif
