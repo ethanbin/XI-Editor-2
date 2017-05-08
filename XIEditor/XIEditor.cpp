@@ -328,16 +328,16 @@ void XIEditor::modeInsert(int originalCharPos) {
 
 //returns false if quit command was used.
 bool XIEditor::modeLastLine() {
-	const std::string quit = "q", write = "w", writeQuit = "wq", testError="e";
+	const std::string quit = "q", write = "w", writeQuit = "wq";
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
 	std::string input;
 	getline(cin,input);
-	//clear buffer to prevent buggy behavior
-	//(ex: ":d q" wont do anything, but ":" would then immediately quit program)
 	cin.clear();
-	if (input == quit)
+	if (input == "")
+		return true;
+	else if (input == quit)
 		return false;
 	else if (input == write){
 		save();
