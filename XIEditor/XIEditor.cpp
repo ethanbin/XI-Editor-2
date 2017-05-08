@@ -290,13 +290,13 @@ void XIEditor::modeInsert(int originalCharPos) {
 
 //returns false if quit command was used.
 bool XIEditor::modeLastLine() {
-	std::string quit = "q", write = "w", writeQuit = "wq";
+	const std::string quit = "q", write = "w", writeQuit = "wq";
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
 	std::string input;
 	cin >> input;
-	//clear buffer to prevent bugs 
+	//clear buffer to prevent buggy behavior
 	//(ex: ":d q" wont do anything, but ":" would then immediately quit program)
 	cin.clear();
 	if (input == quit)
@@ -366,7 +366,8 @@ void XIEditor::modeCommand() {
 				else {
 					//push to stack the command and the letter being deleted
 					_commands.push(CommandPlus(KeyCode::DEL_CHAR,
-						std::string(1, _listBuffer.getEntry(_currentLine)[_currentChar-1]))
+						std::string(1, _listBuffer.getEntry(_currentLine)[_currentChar-1]),
+						_currentChar)
 					);
 					std::string changed = _listBuffer.getEntry(_currentLine).erase(_currentChar-1, 1);
 					_listBuffer.replace(_currentLine, changed);
@@ -461,9 +462,12 @@ bool XIEditor::undo() {
 			break;
 		}
 		case KeyCode::DEL_CHAR: {
+			_currentChar = lastCommand.getCharPos();
 			std::string edited = _listBuffer.getEntry(_currentLine).insert(_currentChar-1,
 															lastCommand.getChange());
 			_listBuffer.replace(_currentLine, edited);
+			
+
 			_commands.pop();
 			break;
 		}
