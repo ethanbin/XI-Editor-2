@@ -18,6 +18,18 @@ XIEditor::XIEditor(std::string fileName) {
 XIEditor::~XIEditor() {}
 
 bool XIEditor::open(std::string fileName) {
+	bool isFile = false;
+	for (char each : fileName) {
+		if (each != ' ')
+			isFile = true;
+		if (isFile)
+			break;
+	}
+	if (!isFile)
+	{
+		displayError("No file name");
+		return false;
+	}
 	//empty before refilling
 	int listSize = _listBuffer.getLength();
 	for (int i = 1; i < listSize; i++)
@@ -35,6 +47,7 @@ bool XIEditor::open(std::string fileName) {
 		ofstream newFile;
 		newFile.open(_fileName);
 		newFile.close();
+		clrscrn();
 		displayError("\""+ _fileName + "\"" + " [New File]");
 		userFile.open(_fileName);
 	}
