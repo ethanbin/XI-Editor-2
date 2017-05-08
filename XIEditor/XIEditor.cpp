@@ -18,7 +18,7 @@ XIEditor::XIEditor(std::string fileName) {
 	userFile.open(fileName);
 
 	if (!userFile.is_open()) {
-		cout << "Error: No File Found." << endl;
+		cout << "Error: File Not Found." << endl;
 		userFile.close();
 		exit(EXIT_FAILURE);
 	}
@@ -42,7 +42,10 @@ XIEditor::XIEditor(std::string fileName) {
 XIEditor::~XIEditor() {}
 
 void XIEditor::start() {
+	consoleBlackOnWhite();
 	modeCommand();
+	consoleWhiteOnBlack();
+	clrscrn();
 }
 
 bool XIEditor::save() {
