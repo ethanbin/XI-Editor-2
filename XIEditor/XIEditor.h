@@ -21,6 +21,10 @@ class XIEditor {
 		void start();
 
 	private: //functions
+		//displays an error message at bottom of editor in red text
+		//to be used for erroneous commands in last line mode
+		void displayError(std::string);
+
 		//overwrites file given when creating this instance of XIEditor with
 		//what is currently displayed.
 		bool save();

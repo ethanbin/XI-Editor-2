@@ -48,6 +48,16 @@ void XIEditor::start() {
 	clrscrn();
 }
 
+void XIEditor::displayError(std::string errorMsg) {
+	moveCursorTo(0, _size);
+	cout << "\n\n\n";
+	cout << ":";
+	consoleWhiteOnBlack();//place holder for function that makes text red
+	cout << errorMsg << endl;
+	Sleep(3000);
+	consoleBlackOnWhite();
+}
+
 bool XIEditor::save() {
 	ofstream txtFile;
 	txtFile.open(_fileName);
@@ -306,7 +316,7 @@ void XIEditor::modeInsert(int originalCharPos) {
 
 //returns false if quit command was used.
 bool XIEditor::modeLastLine() {
-	const std::string quit = "q", write = "w", writeQuit = "wq";
+	const std::string quit = "q", write = "w", writeQuit = "wq", testError="e";
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
@@ -324,6 +334,10 @@ bool XIEditor::modeLastLine() {
 	else if (input == writeQuit) {
 		save();
 		return false;
+	}
+	else{
+		displayError("Not an Editor command: " + input);
+		return true;
 	}
 }
 
