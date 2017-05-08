@@ -322,7 +322,7 @@ bool XIEditor::modeLastLine() {
 	cout << "\n\n\n";
 	cout << ":";
 	std::string input;
-	cin >> input;
+	getline(cin,input);
 	//clear buffer to prevent buggy behavior
 	//(ex: ":d q" wont do anything, but ":" would then immediately quit program)
 	cin.clear();
