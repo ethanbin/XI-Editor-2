@@ -170,6 +170,11 @@ void XIEditor::modeInsert(int originalCharPos) {
 					originalLine = _listBuffer.getEntry(_currentLine);
 					isEdited = false;
 				}
+				else {//primarily for undoing 'I' as of now when isEdited wasnt set
+					if (_currentChar != charPos) {
+						_commands.push(CommandPlus(KeyCode::INSERT_START, charPos));
+					}
+				}
 				break;
 			}
 			//this case takes care of special keys like delete and arrow keys
@@ -494,6 +499,10 @@ bool XIEditor::undo() {
 
 			_currentChar = lastCommand.getCharPos();
 			_commands.pop();
+			break;
+		}
+		case KeyCode::INSERT_START: {
+			_currentChar = lastCommand.getCharPos();
 			break;
 		}
 		case KeyCode::INSERT_ABOVE: {
