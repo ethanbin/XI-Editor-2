@@ -26,10 +26,15 @@ Note: xi editor currently does not support tabbed text.
 ----------------------------------------------------------
 
 Last Line Mode:
-	Enter mode:			:
+	Enter mode:				:
 
-	quit:				q
+	quit:					q
 
-	write (save):			w
+	write to current file:			w
 
-	write (save) and quit:		wq
+	write to different file:		w filename
+
+	write to current file and quit:		wq
+
+	write to different file and quit:	wq filename
+Note: replace instances of "filename" with the name or path of the file to save to.
