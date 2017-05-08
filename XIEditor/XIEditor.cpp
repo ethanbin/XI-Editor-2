@@ -31,8 +31,7 @@ bool XIEditor::open(std::string fileName) {
 		return false;
 	}
 	//empty before refilling
-	int listSize = _listBuffer.getLength();
-	for (int i = 1; i < listSize; i++)
+	for (int i = 1; !_listBuffer.isEmpty();)
 		_listBuffer.remove(i);
 	while (!_commands.isEmpty())
 		_commands.pop();
@@ -98,8 +97,10 @@ void XIEditor::displayError(std::string errorMsg) {
 bool XIEditor::save() {
 	ofstream txtFile;
 	txtFile.open(_fileName);
-	if (!txtFile.is_open())
+	if (!txtFile.is_open()) {
+		displayError("\"" + _fileName + "\"" + " Can't open file for writing");
 		return false;
+	}
 	for (int i = 1; i <= _listBuffer.getLength()-1; i++)
 		txtFile << _listBuffer.getEntry(i) << endl;
 	txtFile << _listBuffer.getEntry(_listBuffer.getLength());
@@ -110,8 +111,11 @@ bool XIEditor::save() {
 bool XIEditor::save(std::string fileName) {
 	ofstream txtFile;
 	txtFile.open(fileName);
-	if (!txtFile.is_open())
+	if (!txtFile.is_open()) {
+		displayError("\"" + fileName + "\"" + " Can't open file for writing");
 		return false;
+	}
+	_fileName = fileName;
 	for (int i = 1; i <= _listBuffer.getLength(); i++)
 		txtFile << _listBuffer.getEntry(i) << endl;
 	txtFile.close();
@@ -382,10 +386,8 @@ bool XIEditor::modeLastLine() {
 		return true;
 	}
 	else if (input == write){
-		if (arg != "") {
-			if (!save(arg))
-				displayError("\"" + arg + "\"" + " Can't open file for writing");
-		}
+		if (arg != "")
+			save(arg);
 		else
 			save();
 		return true;
@@ -393,12 +395,12 @@ bool XIEditor::modeLastLine() {
 	else if (input == writeQuit) {
 		if (arg != "") {
 			if (!save(arg))
-				displayError("\"" + arg + "\"" + " Can't open file for writing");
-			else
-				return false;
+				return true;
+			return false;
 		}
 		else {
-			save();
+			if (!save())
+				return true;
 			return false;
 		}
 	}
