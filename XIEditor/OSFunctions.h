@@ -16,7 +16,7 @@
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
 	}
 
-	inline void consoleRedOnWhite() {
+	inline void consoleWhiteOnRed() {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0xCF);
 	}
 
@@ -44,7 +44,7 @@
 
 	inline void consoleWhiteOnBlack() {}
 
-	inline void consoleRedOnWhite() {}
+	inline void consoleWhiteOnRed() {}
 
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
@@ -62,7 +62,7 @@
 
 	inline void consoleWhiteOnBlack() {}
 	
-	inline void consoleRedOnWhite() {}
+	inline void consoleWhiteOnRed() {}
 
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
@@ -76,7 +76,7 @@
 
 	inline void consoleWhiteOnBlack() {}
 
-	inline void consoleRedOnWhite() {}
+	inline void consoleWhiteOnRed() {}
 	
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}

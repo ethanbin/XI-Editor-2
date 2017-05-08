@@ -76,7 +76,7 @@ void XIEditor::displayError(std::string errorMsg) {
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
-	consoleRedOnWhite();
+	consoleWhiteOnRed();
 	cout << errorMsg << endl;
 
 	int totalWait = 4000;
