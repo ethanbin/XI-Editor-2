@@ -199,6 +199,8 @@ void XIEditor::modeInsert(int originalCharPos) {
 						int currentLineLength = _listBuffer.getEntry(_currentLine).length();
 						if (_currentChar > currentLineLength + 1)
 							_currentChar = currentLineLength+1;
+						else
+							_commands.push(CommandPlus(KeyCode::RIGHT));
 						charPos = _currentChar;
 						break;
 					}
@@ -209,6 +211,8 @@ void XIEditor::modeInsert(int originalCharPos) {
 							isEdited = false;
 						}
 						_currentChar--;
+						if (!stayInText())
+							_commands.push(CommandPlus(KeyCode::LEFT));
 						stayInText();
 						charPos = _currentChar;
 						break;
@@ -220,6 +224,8 @@ void XIEditor::modeInsert(int originalCharPos) {
 							isEdited = false;
 						}
 						_currentLine--;
+						if (_currentLine != 0)
+							_commands.push(CommandPlus(KeyCode::UP, _currentChar));
 						stayInText();
 						//this is ok to have out of above if statement because 
 						//moving up or down will change what originalLine should be regardless of 
@@ -234,6 +240,8 @@ void XIEditor::modeInsert(int originalCharPos) {
 							isEdited = false;
 						}
 						_currentLine++;
+						if (_currentLine != _size + 1)
+							_commands.push(CommandPlus(KeyCode::DOWN, _currentChar));
 						stayInText();
 						//this is ok to have out of above if statement because 
 						//moving up or down will change what originalLine should be regardless of 
