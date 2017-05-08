@@ -52,9 +52,10 @@ void XIEditor::displayError(std::string errorMsg) {
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
-	consoleWhiteOnBlack();//place holder for function that makes text red
+	consoleRedOnWhite();
 	cout << errorMsg << endl;
 	wait(3000);
+	cin.clear();
 	consoleBlackOnWhite();
 }
 
