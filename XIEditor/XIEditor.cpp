@@ -54,7 +54,7 @@ void XIEditor::displayError(std::string errorMsg) {
 	cout << ":";
 	consoleWhiteOnBlack();//place holder for function that makes text red
 	cout << errorMsg << endl;
-	Sleep(3000);
+	wait(3000);
 	consoleBlackOnWhite();
 }
 
