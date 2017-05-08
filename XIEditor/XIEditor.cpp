@@ -342,7 +342,8 @@ void XIEditor::modeCommand() {
 			//move right
 			case KeyCode::RIGHT:
 			{
-				goRight();
+				//goRight();
+				_currentChar++;
 				if (!stayInText())
 					_commands.push(CommandPlus(KeyCode::RIGHT));
 				break;
@@ -350,7 +351,8 @@ void XIEditor::modeCommand() {
 			//move left
 			case KeyCode::LEFT:
 			{
-				goLeft();
+				//goLeft();
+				_currentChar--;
 				if (!stayInText())
 					_commands.push(CommandPlus(KeyCode::LEFT));
 				break;
@@ -452,12 +454,14 @@ bool XIEditor::undo() {
 			break;
 		}
 		case KeyCode::RIGHT: {
-			goLeft();
+			//goLeft();
+			_currentChar--;
 			_commands.pop();
 			break;
 		}
 		case KeyCode::LEFT: {
-			goRight();
+			//goRight();
+			_currentChar++;
 			_commands.pop();
 			break;
 		}
