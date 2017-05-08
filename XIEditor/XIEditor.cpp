@@ -336,24 +336,56 @@ void XIEditor::modeInsert(int originalCharPos) {
 
 //returns false if quit command was used.
 bool XIEditor::modeLastLine() {
-	const std::string quit = "q", write = "w", writeQuit = "wq";
+	const std::string quit = "q", write = "w", writeQuit = "wq", openFile = "e";
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
-	std::string input;
+	std::string input, arg = "";
 	getline(cin,input);
-	cin.clear();
-	if (input == "")
+
+	//split command and arguement
+	int delimLocation = input.find(" ");
+	if (delimLocation != -1) {
+							//to ignore space
+		arg = input.substr(delimLocation + 1, input.length() - delimLocation);
+		input = input.substr(0, delimLocation);
+	}
+
+	if (input == "") {
+		if (arg != "")
+			displayError("Not an Editor command: " + arg);
 		return true;
-	else if (input == quit)
-		return false;
+	}
+	else if (input == quit) {
+		if (arg != "")
+			displayError("Trailing characters");
+		else
+			return false;
+		return true;
+	}
 	else if (input == write){
-		save();
+		if (arg != "") {
+			if (!save(arg))
+				displayError("\"" + arg + "\"" + " Can't open file for writing");
+		}
+		else
+			save();
 		return true;
 	}
 	else if (input == writeQuit) {
-		save();
-		return false;
+		if (arg != "") {
+			if (!save(arg))
+				displayError("\"" + arg + "\"" + " Can't open file for writing");
+			else
+				return false;
+		}
+		else {
+			save();
+			return false;
+		}
+	}
+	else if (input == openFile) {
+		open(arg);
 	}
 	else{
 		displayError("Not an Editor command: " + input);
