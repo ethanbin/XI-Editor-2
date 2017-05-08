@@ -25,6 +25,11 @@
 			GetStdHandle(STD_OUTPUT_HANDLE),
 			coord);
 	}
+
+	inline void wait(int milliSeconds) {
+		Sleep(milliSeconds);
+	}
+	;
 #elif __APPLE__
 #include "TargetConditionals.h"
 	//mac OS
@@ -37,6 +42,8 @@
 
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
+
+	inline void wait(int milSeconds) {}
 	#else
 		#error "Unknown Apple platform"
 	#endif
@@ -51,6 +58,8 @@
 	
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
+
+	inline void wait(int milSeconds) {}
 //unix
 #elif __unix__
 	inline void clrscrn() {}
@@ -61,6 +70,11 @@
 	
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
+
+	inline void wait(int milliSeconds) {
+		//this function uses microseconds, so we *1000 to get milliseconds
+		usleep(milliSeconds * 1000);
+	}
 #endif
 
 
