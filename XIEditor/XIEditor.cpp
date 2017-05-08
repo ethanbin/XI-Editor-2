@@ -54,7 +54,18 @@ void XIEditor::displayError(std::string errorMsg) {
 	cout << ":";
 	consoleRedOnWhite();
 	cout << errorMsg << endl;
-	wait(3000);
+
+	int totalWait = 4000;
+	int waitCycle = 50;
+
+	//this loop will wait a total of 3000 milliseconds or until a key is hit.
+	for (int i = 0; i < totalWait; i += waitCycle) {
+		wait(waitCycle);
+		if (_kbhit()) {
+			break;
+		}
+	}
+
 	cin.clear();
 	consoleBlackOnWhite();
 }
