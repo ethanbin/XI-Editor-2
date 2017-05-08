@@ -12,6 +12,18 @@ using std::ifstream;
 using std::ofstream;
 
 XIEditor::XIEditor(std::string fileName) {
+	open(fileName);
+}
+
+XIEditor::~XIEditor() {}
+
+bool XIEditor::open(std::string fileName) {
+	//empty before refilling
+	for (int i = 1; i < _listBuffer.getLength(); i++)
+		_listBuffer.remove(i);
+	while (!_commands.isEmpty())
+		_commands.pop();
+
 	_size = 0;
 	_fileName = fileName;
 	ifstream userFile;
@@ -27,19 +39,14 @@ XIEditor::XIEditor(std::string fileName) {
 	for (; !userFile.eof(); _size++) {
 		getline(userFile, lineCollector);
 		//capacity+1 when inserting because LinkedList 
-			//starts with position 1, unlike an array
-		_listBuffer.insert(_size +1, lineCollector);
+		//starts with position 1, unlike an array
+		_listBuffer.insert(_size + 1, lineCollector);
 	}
 
-	userFile.clear();
-	userFile.seekg(0);
-	
 	_currentLine = 1;
 	_currentChar = 1;
 	userFile.close();
 }
-
-XIEditor::~XIEditor() {}
 
 void XIEditor::start() {
 	consoleBlackOnWhite();
