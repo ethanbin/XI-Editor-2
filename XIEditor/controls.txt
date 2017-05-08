@@ -22,6 +22,7 @@ Insert Mode:
 	Navigate Text:				Arrow Keys
 
 	Exit Insert mode:			ESC Key
+Note: xi editor currently does not support tabbed text.
 ----------------------------------------------------------
 
 Last Line Mode:

@@ -195,7 +195,7 @@ void XIEditor::modeInsert(int originalCharPos) {
 					originalLine = _listBuffer.getEntry(_currentLine);
 					isEdited = false;
 				}
-				else {//primarily for undoing 'I' as of now when isEdited wasnt set
+				else {//for now, this is primarily for undoing 'I' when isEdited wasnt set
 					if (_currentChar != charPos) {
 						_commands.push(CommandPlus(KeyCode::INSERT_START, charPos));
 					}
@@ -314,7 +314,8 @@ void XIEditor::modeInsert(int originalCharPos) {
 				break;
 			}*/
 			default: {
-				if (input[0] != KeyCode::RETURN) {
+								//excluding tab until it is supported
+				if (input[0] != KeyCode::RETURN && input[0] != '\t') {
 					input = input[0];
 					std::string edited = _listBuffer.getEntry(_currentLine).insert((_currentChar++)-1, input);
 					_listBuffer.replace(_currentLine, edited);
