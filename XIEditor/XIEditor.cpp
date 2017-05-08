@@ -19,7 +19,8 @@ XIEditor::~XIEditor() {}
 
 bool XIEditor::open(std::string fileName) {
 	//empty before refilling
-	for (int i = 1; i < _listBuffer.getLength(); i++)
+	int listSize = _listBuffer.getLength();
+	for (int i = 1; i < listSize; i++)
 		_listBuffer.remove(i);
 	while (!_commands.isEmpty())
 		_commands.pop();
@@ -30,9 +31,12 @@ bool XIEditor::open(std::string fileName) {
 	userFile.open(fileName);
 
 	if (!userFile.is_open()) {
-		cout << "Error: File Not Found." << endl;
 		userFile.close();
-		exit(EXIT_FAILURE);
+		ofstream newFile;
+		newFile.open(_fileName);
+		newFile.close();
+		displayError("\""+ _fileName + "\"" + " [New File]");
+		userFile.open(_fileName);
 	}
 
 	std::string lineCollector;
@@ -46,6 +50,7 @@ bool XIEditor::open(std::string fileName) {
 	_currentLine = 1;
 	_currentChar = 1;
 	userFile.close();
+	return true;
 }
 
 void XIEditor::start() {
