@@ -101,6 +101,11 @@ void XIEditor::displayError(std::string errorMsg) {
 }
 
 bool XIEditor::save() {
+	if (_fileName == "") {
+		displayError("No file name");
+		return false;
+	}
+
 	ofstream txtFile;
 	txtFile.open(_fileName);
 	if (!txtFile.is_open()) {
