@@ -12,7 +12,9 @@ using std::ifstream;
 using std::ofstream;
 
 XIEditor::XIEditor(std::string fileName) {
+	consoleBlackOnWhite();
 	open(fileName);
+	consoleWhiteOnBlack();
 }
 
 XIEditor::~XIEditor() {}
