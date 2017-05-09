@@ -232,7 +232,6 @@ void XIEditor::modeInsert(int originalCharPos) {
 				notEsc = false;
 				if (isEdited) {
 					_commands.push(CommandPlus(KeyCode::INSERT_HERE, originalLine, charPos, _currentLine));
-					originalLine = _listBuffer.getEntry(_currentLine);
 					isEdited = false;
 				}
 				else {//for now, this is primarily for undoing 'I' when isEdited wasnt set
