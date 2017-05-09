@@ -11,6 +11,8 @@
 
 class XIEditor {
 	public: //functions
+		//this constructor is for when file name is not specified
+		XIEditor();
 
 		/*constructor opens file fileName, counts lines, 
 		and reads in each line to list Buffer.*/

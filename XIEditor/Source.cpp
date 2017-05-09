@@ -12,6 +12,9 @@ void main(int argc, char *argv[]) {
 		XIEditor editor(argv[1]);
 		editor.start();
 	}
-	else
-		cout << "Error: No file specified." << endl;
+	else {
+		XIEditor editor;
+		editor.start();
+	}
+		//cout << "Error: No file specified." << endl;
 }

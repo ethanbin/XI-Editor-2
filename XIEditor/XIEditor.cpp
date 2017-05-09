@@ -11,6 +11,10 @@ using std::endl;
 using std::ifstream;
 using std::ofstream;
 
+XIEditor::XIEditor(): _fileName(""), _currentLine(1), _currentChar(1) {
+	_listBuffer.insert(_currentLine,"");
+}
+
 XIEditor::XIEditor(std::string fileName) {
 	consoleBlackOnWhite();
 	open(fileName);
