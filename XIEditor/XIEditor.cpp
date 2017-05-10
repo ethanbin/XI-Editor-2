@@ -88,7 +88,7 @@ void XIEditor::displayError(std::string errorMsg) {
 	int totalWait = 4000;
 	int waitCycle = 50;
 
-	//this loop will wait a total of 3000 milliseconds or until a key is hit.
+	//this loop will wait a total of 4000 milliseconds or until a key is hit.
 	for (int i = 0; i < totalWait; i += waitCycle) {
 		wait(waitCycle);
 		if (_kbhit()) {
@@ -368,7 +368,8 @@ void XIEditor::modeInsert(int originalCharPos) {
 
 //returns false if quit command was used.
 bool XIEditor::modeLastLine() {
-	const std::string quit = "q", write = "w", writeQuit = "wq", openFile = "e";
+	const std::string quit = "q", write = "w", writeQuit = "wq", openFile = "e",
+		quitForce = "q!", openFileForce = "e!";
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
