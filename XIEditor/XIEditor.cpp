@@ -499,13 +499,14 @@ void XIEditor::modeCommand() {
 			case KeyCode::UNDO: {
 				undo();
 				break;
-			}/**/
+			}/*
 			case KeyCode::UNDO_ALL: {
 				int lineToUndo = _currentLine;
 				while(_currentLine == lineToUndo)
 					undo();
 				break;
 			}
+			*/
 			case KeyCode::INSERT_ABOVE: {
 				_commands.push(CommandPlus(KeyCode::INSERT_ABOVE,_currentChar));
 				_currentChar = 0; //set cursor to beginning of the line
