@@ -4,6 +4,7 @@
 #include "StackInterface.h"
 #include "LinkedList.h"
 #include "LinkedStack.h"
+#include "BinarySearchTree.h"
 #include "Command.h"
 #include <fstream>
 #include <string>
@@ -83,6 +84,7 @@ class XIEditor {
 		LinkedStack<CommandPlus> _commands;
 		LinkedList<std::string> _listBuffer;
 		int _size, _currentLine=1, _currentChar=1;
+		BinarySearchTree<std::string> _keywordTree;
 		//false if there is no unsaved change; true if no change or changes were saved.
 		bool _unsavedChange;
 };
