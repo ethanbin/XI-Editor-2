@@ -83,5 +83,7 @@ class XIEditor {
 		LinkedStack<CommandPlus> _commands;
 		LinkedList<std::string> _listBuffer;
 		int _size, _currentLine=1, _currentChar=1;
+		//false if there is no unsaved change; true if no change or changes were saved.
+		bool _unsavedChange;
 };
 #endif

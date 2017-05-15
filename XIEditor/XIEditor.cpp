@@ -11,7 +11,7 @@ using std::endl;
 using std::ifstream;
 using std::ofstream;
 
-XIEditor::XIEditor(): _fileName(""), _currentLine(1), _currentChar(1) {
+XIEditor::XIEditor(): _fileName(""), _currentLine(1), _currentChar(1), _unsavedChange(false) {
 	_listBuffer.insert(_currentLine,"");
 }
 
@@ -67,6 +67,7 @@ bool XIEditor::open(std::string fileName) {
 
 	_currentLine = 1;
 	_currentChar = 1;
+	_unsavedChange = false;
 	userFile.close();
 	return true;
 }
@@ -116,6 +117,7 @@ bool XIEditor::save() {
 		txtFile << _listBuffer.getEntry(i) << endl;
 	txtFile << _listBuffer.getEntry(_listBuffer.getLength());
 	txtFile.close();
+	_unsavedChange = false;
 	return true;
 }
 
@@ -130,6 +132,7 @@ bool XIEditor::save(std::string fileName) {
 	for (int i = 1; i <= _listBuffer.getLength(); i++)
 		txtFile << _listBuffer.getEntry(i) << endl;
 	txtFile.close();
+	_unsavedChange = false;
 	return true;
 }
 
@@ -180,12 +183,13 @@ bool XIEditor::deleteLine(int deleteHere) {
 		_listBuffer.replace(deleteHere, "");
 		_size = 1;
 	}
+	_unsavedChange = true;
 	return true;
 }
 
 void XIEditor::insertLine(std::string line, int insertHere) {
 	_size++;
-	_listBuffer.insert(insertHere, line);
+	_unsavedChange = _listBuffer.insert(insertHere, line);
 }
 
 bool XIEditor::stayInText() {
