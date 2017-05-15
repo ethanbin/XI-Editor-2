@@ -147,18 +147,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="NotFoundException.cpp" />
+    <ClCompile Include="PrecondViolatedExcep.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="XIEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryNode.h" />
+    <ClInclude Include="BinaryNodeTree.h" />
+    <ClInclude Include="BinarySearchTree.h" />
+    <ClInclude Include="BinaryTreeInterface.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedStack.h" />
     <ClInclude Include="ListInterface.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="NotFoundException.h" />
     <ClInclude Include="OSFunctions.h" />
+    <ClInclude Include="PrecondViolatedExcep.h" />
+    <ClInclude Include="PrecondViolatedExcept.h" />
     <ClInclude Include="StackInterface.h" />
     <ClInclude Include="XIEditor.h" />
   </ItemGroup>
