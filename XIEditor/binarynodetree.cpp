@@ -10,8 +10,8 @@
 //////////////////////////////////////////////////////////////
 //      Protected Utility Methods Section
 //////////////////////////////////////////////////////////////
-
-int max(int x, int y){
+template<class ItemType>
+int BinaryNodeTree<ItemType>::max(int x, int y){
 	if (x > y)
 		return x;
 	else
