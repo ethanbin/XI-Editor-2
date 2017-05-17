@@ -42,7 +42,6 @@ XIEditor::XIEditor(std::string fileName){
 		keywords >> keywordCollector;
 		_keywords.add(keywordCollector);
 	}
-	int test = _keywords.getNumberOfNodes();
 	
 	consoleBlackOnWhite();
 	open(fileName);
