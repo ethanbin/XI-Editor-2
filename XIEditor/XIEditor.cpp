@@ -172,6 +172,8 @@ void XIEditor::printLines()
 	if (_colorCoded) {
 		for (int i = 1; i < _size + 1; i++) {
 			std::string currentLine = _listBuffer.getEntry(i);
+			for (int i = 0; currentLine[i] == ' '; i++)
+				cout << " ";
 			std::istringstream streamWords{ currentLine };
 			while (!streamWords.eof()) {
 				std::string word;
@@ -182,10 +184,8 @@ void XIEditor::printLines()
 					cout << word << " ";
 					consoleBlackOnWhite();
 				}
-				//make blue, print, make black
 				else
 					cout << word << " ";
-				//print
 			}
 			cout << endl;
 		}
