@@ -11,11 +11,39 @@ using std::endl;
 using std::ifstream;
 using std::ofstream;
 
-XIEditor::XIEditor(): _fileName(""), _currentLine(1), _currentChar(1), _unsavedChange(false) {
+XIEditor::XIEditor(): _fileName(""), _currentLine(1), _currentChar(1),
+		_unsavedChange(false)
+{
 	_listBuffer.insert(_currentLine,"");
+
+	ifstream keywords;
+	keywords.open("keywords.txt");
+	if (!keywords.is_open()){
+		cout << "Keywords file not found." << endl;
+		exit(EXIT_FAILURE);
+	}
+	std::string keywordCollector;
+	while (!keywords.eof()) {
+		keywords >> keywordCollector;
+		_keywords.add(keywordCollector);
+	}
+	keywords.close();
 }
 
-XIEditor::XIEditor(std::string fileName) {
+XIEditor::XIEditor(std::string fileName){
+	ifstream keywords;
+	keywords.open("keywords.txt");
+	if (!keywords.is_open()) {
+		cout << "Keywords file not found." << endl;
+		exit(EXIT_FAILURE);
+	}
+	std::string keywordCollector;
+	while (!keywords.eof()) {
+		keywords >> keywordCollector;
+		_keywords.add(keywordCollector);
+	}
+	int test = _keywords.getNumberOfNodes();
+	
 	consoleBlackOnWhite();
 	open(fileName);
 	consoleWhiteOnBlack();

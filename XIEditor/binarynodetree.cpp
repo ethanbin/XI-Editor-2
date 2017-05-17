@@ -18,6 +18,7 @@ int BinaryNodeTree<ItemType>::max(int x, int y){
 		return y;
 }
 
+/*
 template<class ItemType>
 int BinaryNodeTree<ItemType>::getHeightHelper(std::shared_ptr<BinaryNode<ItemType>> subTreePtr) const
 {
@@ -26,6 +27,24 @@ int BinaryNodeTree<ItemType>::getHeightHelper(std::shared_ptr<BinaryNode<ItemTyp
    else
       return 1 + max(getHeightHelper(subTreePtr->getLeftChildPtr()),
                      getHeightHelper(subTreePtr->getRightChildPtr()));
+}  // end getHeightHelper
+*/
+
+//the function under this comment is the same as the function above, but made to work without
+//calling the max function. for some reason, calling max seems bugged.
+
+template<class ItemType>
+int BinaryNodeTree<ItemType>::getHeightHelper(std::shared_ptr<BinaryNode<ItemType>> subTreePtr) const
+{
+	if (subTreePtr == nullptr)
+		return 0;
+
+	int leftChild = getHeightHelper(subTreePtr->getLeftChildPtr());
+	int rightChild = getHeightHelper(subTreePtr->getRightChildPtr());
+	if (leftChild > rightChild)
+		return leftChild + 1;
+	else
+		return rightChild + 1;
 }  // end getHeightHelper
 
 template<class ItemType>
