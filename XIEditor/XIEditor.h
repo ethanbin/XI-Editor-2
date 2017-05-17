@@ -86,6 +86,6 @@ class XIEditor {
 		BinarySearchTree<std::string> _keywords;
 		int _size, _currentLine=1, _currentChar=1;
 		//false if there is no unsaved change; true if no change or changes were saved.
-		bool _unsavedChange;
+		bool _unsavedChange, _colorCoded;
 };
 #endif

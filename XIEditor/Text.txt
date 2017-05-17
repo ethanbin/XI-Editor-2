@@ -5,3 +5,6 @@ And here's the fourth line, great.
 Ok, I think thats about enough typing.
 
 P.S. - Waffles sound really great right about now.
+
+for (int i = 0; i < idk; i++)
+    cout << "awesome" << endl;

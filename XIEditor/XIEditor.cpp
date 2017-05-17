@@ -1,5 +1,7 @@
 #include "XIEditor.h"
 #include "Enums.h"
+#include <sstream>
+#include <vector>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -12,7 +14,7 @@ using std::ifstream;
 using std::ofstream;
 
 XIEditor::XIEditor(): _fileName(""), _currentLine(1), _currentChar(1),
-		_unsavedChange(false)
+		_unsavedChange(false), _colorCoded(false)
 {
 	_listBuffer.insert(_currentLine,"");
 
@@ -30,7 +32,7 @@ XIEditor::XIEditor(): _fileName(""), _currentLine(1), _currentChar(1),
 	keywords.close();
 }
 
-XIEditor::XIEditor(std::string fileName){
+XIEditor::XIEditor(std::string fileName): _colorCoded(false) {
 	ifstream keywords;
 	keywords.open("keywords.txt");
 	if (!keywords.is_open()) {
@@ -167,8 +169,31 @@ bool XIEditor::save(std::string fileName) {
 void XIEditor::printLines()
 {
 	clrscrn();
-	for (int i = 1; i < _size+1; i++)
-		cout << _listBuffer.getEntry(i) << endl;
+	if (_colorCoded) {
+		for (int i = 1; i < _size + 1; i++) {
+			std::string currentLine = _listBuffer.getEntry(i);
+			std::istringstream streamWords{ currentLine };
+			while (!streamWords.eof()) {
+				std::string word;
+				streamWords >> word;
+
+				if (!_keywords.contains(word)) {
+					consoleBlueOnWhite();
+					cout << word << " ";
+					consoleBlackOnWhite();
+				}
+				//make blue, print, make black
+				else
+					cout << word << " ";
+				//print
+			}
+			cout << endl;
+		}
+	}
+	else {
+		for (int i = 1; i < _size + 1; i++)
+			cout << _listBuffer.getEntry(i) << endl;
+	}
 	moveCursorTo(_currentChar - 1, _currentLine - 1);
 }
 
@@ -403,7 +428,7 @@ void XIEditor::modeInsert(int originalCharPos) {
 //returns false if quit command was used.
 bool XIEditor::modeLastLine() {
 	const std::string quit = "q", write = "w", writeQuit = "wq", openFile = "e",
-		quitForce = "q!", openFileForce = "e!";
+		quitForce = "q!", openFileForce = "e!", colorCoded = "clc";
 	moveCursorTo(0, _size);
 	cout << "\n\n\n";
 	cout << ":";
@@ -451,6 +476,13 @@ bool XIEditor::modeLastLine() {
 	}
 	else if (input == openFile) {
 		open(arg);
+	}
+	else if (input == colorCoded) {
+		if (arg != "")
+			displayError("Trailing characters");
+		else
+			_colorCoded = !_colorCoded;
+		return true;
 	}
 	else{
 		displayError("Not an Editor command: " + input);

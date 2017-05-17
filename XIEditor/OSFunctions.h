@@ -7,7 +7,8 @@
 	inline void clrscrn() {
 		system("cls");
 	}
-
+	//hex color is in order of intensity, red, green, blue
+	//higher 4 bits are background, lower 4 are text
 	inline void consoleBlackOnWhite() {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0xF0);
 	}
@@ -18,6 +19,10 @@
 
 	inline void consoleWhiteOnRed() {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0xCF);
+	}
+
+	inline void consoleBlueOnWhite() {
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0xF9);
 	}
 
 	//takes int x and y for coordinates to move cursor to.
@@ -46,6 +51,8 @@
 
 	inline void consoleWhiteOnRed() {}
 
+	inline void consoleBlueOnWhite() {}
+
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
 
@@ -64,6 +71,8 @@
 	
 	inline void consoleWhiteOnRed() {}
 
+	inline void consoleBlueOnWhite() {}
+
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
 
@@ -77,6 +86,8 @@
 	inline void consoleWhiteOnBlack() {}
 
 	inline void consoleWhiteOnRed() {}
+
+	inline void consoleBlueOnWhite() {}
 	
 	//takes int x and y for coordinates to move cursor to.
 	inline void cursor(int x, int y) {}
