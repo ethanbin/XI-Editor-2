@@ -201,6 +201,9 @@ void XIEditor::goLeft() {
 bool XIEditor::deleteLine(int deleteHere) {
 	if (deleteHere < 1)
 		return false;
+	
+	if (_size == 1 && _listBuffer.getEntry(deleteHere) == "")
+		return false;
 
 	if (_size > 1) {
 		_listBuffer.remove(deleteHere);
@@ -523,8 +526,9 @@ void XIEditor::modeCommand() {
 			case KeyCode::DEL_LINE: {
 				//push to stack the command and the line being deleted
 				if (_getch() == KeyCode::DEL_LINE && _size >= 0) {
-					_commands.push(CommandPlus(KeyCode::DEL_LINE, _listBuffer.getEntry(_currentLine)));
-					deleteLine(_currentLine);
+					CommandPlus command(KeyCode::DEL_LINE, _listBuffer.getEntry(_currentLine));
+					if (deleteLine(_currentLine))
+						_commands.push(command);
 				}
 				break;
 			}
