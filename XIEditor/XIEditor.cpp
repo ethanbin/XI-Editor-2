@@ -179,7 +179,7 @@ void XIEditor::printLines()
 				std::string word;
 				streamWords >> word;
 
-				if (!_keywords.contains(word)) {
+				if (_keywords.contains(word)) {
 					consoleBlueOnWhite();
 					cout << word << " ";
 					consoleBlackOnWhite();

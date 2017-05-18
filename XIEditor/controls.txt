@@ -37,4 +37,6 @@ Last Line Mode:
 	write to current file and quit:		wq
 
 	write to different file and quit:	wq filename
+
+	toggle color coding:			clc
 Note: replace instances of "filename" with the name or path of the file to save to.
